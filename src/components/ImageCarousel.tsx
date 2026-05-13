@@ -10,6 +10,7 @@ interface CarouselImage {
 interface ImageCarouselProps {
   images: CarouselImage[];
   interval?: number;
+  onSlideChange?: (index: number) => void;
 }
 
 function ImageCarousel(props: ImageCarouselProps) {
@@ -23,6 +24,10 @@ function ImageCarousel(props: ImageCarouselProps) {
     }, props.interval);
     return () => clearInterval(timer);
   }, [props.images.length, props.interval]);
+
+  useEffect(() => {
+    props.onSlideChange?.(current);
+  }, [current]);
 
   return (
     <div
