@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import EventCard, { type DiscordEvent } from '../components/EventCard';
 import Subtitle from '../components/Subtitle';
+import { usePageTitle } from '../lib/usePageTitle';
 
 const WORKER_URL = 'https://wandering-flower-b7ee.leftclickmage.workers.dev';
 
 function EventsPage() {
+  usePageTitle('Events');
   const [events, setEvents] = useState<DiscordEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

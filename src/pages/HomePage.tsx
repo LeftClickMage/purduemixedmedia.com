@@ -2,6 +2,7 @@ import Button from '../components/Button';
 import Title from '../components/Title';
 import ImageCarousel from '../components/ImageCarousel';
 import { hangout, camping } from '../assets/images';
+import { usePageTitle } from '../lib/usePageTitle';
 
 const carouselImages = [
   { ...hangout, photographer: 'Ethan Twu' },
@@ -9,6 +10,7 @@ const carouselImages = [
 ];
 
 function HomePage() {
+  usePageTitle('Home');
   return (
     <div>
       <div className="relative w-full" style={{ aspectRatio: '2.39 / 1' }}>
