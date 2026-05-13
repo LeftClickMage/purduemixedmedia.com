@@ -26,7 +26,7 @@ function EventCard({ event }: EventCardProps) {
       {imageBaseUrl && (
         <div className="relative w-full h-40 sm:h-48 mb-2">
           <Image
-            lowSrc={`${imageBaseUrl}?size=128`}
+            lowSrc={`${imageBaseUrl}?size=32`}
             src={`${imageBaseUrl}?size=2048`}
             alt={event.name}
             className="w-full h-full rounded-md"
