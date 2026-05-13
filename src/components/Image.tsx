@@ -22,7 +22,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, onLoad }: ImageProps
             alt=""
             aria-hidden
             onLoad={() => setLowLoaded(true)}
-            className={`absolute inset-0 scale-110 blur-lg transition-opacity duration-700 ${highLoaded ? 'opacity-0' : 'opacity-100'} ${imgClasses}`}
+            className={`absolute inset-0 scale-105 blur-md transition-opacity duration-700 ${highLoaded ? 'opacity-0' : 'opacity-100'} ${imgClasses}`}
           />
         )}
         {lowLoaded && (
