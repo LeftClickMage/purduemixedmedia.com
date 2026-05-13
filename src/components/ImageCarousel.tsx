@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from './Image';
 
 interface CarouselImage {
@@ -11,11 +11,19 @@ interface ImageCarouselProps {
   images: CarouselImage[];
   interval?: number;
   onSlideChange?: (index: number) => void;
+  onFirstLowResLoaded?: () => void;
 }
 
 function ImageCarousel(props: ImageCarouselProps) {
   const [current, setCurrent] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const lowResFiredRef = useRef(false);
+
+  const handleLowLoad = () => {
+    if (lowResFiredRef.current) return;
+    lowResFiredRef.current = true;
+    props.onFirstLowResLoaded?.();
+  };
 
   useEffect(() => {
     if (props.images.length <= 1) return;
@@ -31,7 +39,7 @@ function ImageCarousel(props: ImageCarouselProps) {
 
   return (
     <div
-      className="relative w-full h-full border-b-5 border-black select-none"
+      className="relative w-full h-full bg-black border-b-5 border-black select-none"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -41,6 +49,7 @@ function ImageCarousel(props: ImageCarouselProps) {
           src={image.src}
           lowSrc={image.lowSrc}
           alt={`carousel ${i + 1}`}
+          onLowLoad={handleLowLoad}
           className={`absolute inset-0 transition-opacity duration-700 ${
             i === current ? 'opacity-100' : 'opacity-0'
           }`}

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Title from '../components/Title';
 import ImageCarousel from '../components/ImageCarousel';
 import { hangout, camping } from '../assets/images';
@@ -25,16 +25,28 @@ function pickRandomFont(): string {
 function HomePage() {
   usePageTitle('Home');
   const titleFont = useRef(pickRandomFont());
+  const [titleReady, setTitleReady] = useState(false);
   console.log('Title font:', titleFont.current.match(/'([^']+)'/)?.[1] ?? titleFont.current);
 
   return (
     <div>
-      <div className="relative w-full" style={{ paddingBottom: '41.84%' }}>
+      <style>{`
+        .carousel-aspect { padding-bottom: 100%; }
+        @media (min-width: 640px) { .carousel-aspect { padding-bottom: 66.66%; } }
+        @media (min-width: 1024px) { .carousel-aspect { padding-bottom: 41.84%; } }
+      `}</style>
+      <div className="relative w-full carousel-aspect">
         <div className="absolute inset-0">
-          <ImageCarousel images={carouselImages} interval={4000} />
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <Title text='Purdue Mixed Media' fontFamily={titleFont.current} />
-          </div>
+          <ImageCarousel
+            images={carouselImages}
+            interval={4000}
+            onFirstLowResLoaded={() => setTitleReady(true)}
+          />
+          {titleReady && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <Title text='Purdue Mixed Media' fontFamily={titleFont.current} />
+            </div>
+          )}
         </div>
       </div>
     </div>

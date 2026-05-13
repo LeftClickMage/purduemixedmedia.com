@@ -7,9 +7,10 @@ interface ImageProps {
   className?: string;
   imgClassName?: string;
   onLoad?: () => void;
+  onLowLoad?: () => void;
 }
 
-function Image({ src, lowSrc, alt, className, imgClassName, onLoad }: ImageProps) {
+function Image({ src, lowSrc, alt, className, imgClassName, onLoad, onLowLoad }: ImageProps) {
   const [lowLoaded, setLowLoaded] = useState(!lowSrc);
   const [highLoaded, setHighLoaded] = useState(false);
   const imgClasses = `w-full h-full object-cover ${imgClassName ?? ''}`;
@@ -21,7 +22,10 @@ function Image({ src, lowSrc, alt, className, imgClassName, onLoad }: ImageProps
             src={lowSrc}
             alt=""
             aria-hidden
-            onLoad={() => setLowLoaded(true)}
+            onLoad={() => {
+              setLowLoaded(true);
+              onLowLoad?.();
+            }}
             className={`absolute inset-0 scale-105 blur-md transition-opacity duration-700 ${highLoaded ? 'opacity-0' : 'opacity-100'} ${imgClasses}`}
           />
         )}
