@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import Image from './Image';
 
 interface CarouselImage {
   src: string;
+  lowSrc?: string;
   photographer?: string;
 }
 
@@ -29,11 +31,12 @@ function ImageCarousel(props: ImageCarouselProps) {
       onMouseLeave={() => setHovered(false)}
     >
       {props.images.map((image, i) => (
-        <img
+        <Image
           key={image.src}
           src={image.src}
+          lowSrc={image.lowSrc}
           alt={`carousel ${i + 1}`}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+          className={`absolute inset-0 transition-opacity duration-700 ${
             i === current ? 'opacity-100' : 'opacity-0'
           }`}
         />

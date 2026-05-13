@@ -1,12 +1,11 @@
 import Button from '../components/Button';
 import Title from '../components/Title';
 import ImageCarousel from '../components/ImageCarousel';
-import PurdueMixedMediaClubHangout from '../assets/PurdueMixedMediaClubHangout.JPG';
-import PurdueMixedMediaClubCamping from '../assets/PurdueMixedMediaClubCamping.jpg';
+import { hangout, camping } from '../assets/images';
 
 const carouselImages = [
-  { src: PurdueMixedMediaClubHangout, photographer: 'Ethan Twu' },
-  { src: PurdueMixedMediaClubCamping, photographer: 'Ethan Twu' },
+  { ...hangout, photographer: 'Ethan Twu' },
+  { ...camping, photographer: 'Ethan Twu' },
 ];
 
 function HomePage() {

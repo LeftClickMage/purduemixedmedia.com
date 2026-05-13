@@ -19,6 +19,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/events" element={<EventsPage />} />
       </Routes>
+      
       </div>
     </BrowserRouter>
   )
