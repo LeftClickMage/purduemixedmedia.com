@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
 interface ImageProps {
   src: string;
   lowSrc?: string;
@@ -14,6 +16,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, onLoad, onLowLoad }:
   const [lowLoaded, setLowLoaded] = useState(!lowSrc);
   const [highLoaded, setHighLoaded] = useState(false);
   const imgClasses = `w-full h-full object-cover ${imgClassName ?? ''}`;
+  const fadeClasses = isIOS ? '' : 'transition-opacity duration-700';
   return (
     <div className={`overflow-hidden ${className ?? ''}`}>
       <div className="relative w-full h-full">
@@ -26,7 +29,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, onLoad, onLowLoad }:
               setLowLoaded(true);
               onLowLoad?.();
             }}
-            className={`absolute inset-0 scale-105 blur-md transition-opacity duration-700 ${highLoaded ? 'opacity-0' : 'opacity-100'} ${imgClasses}`}
+            className={`absolute inset-0 scale-105 blur-md ${fadeClasses} ${highLoaded ? 'opacity-0' : 'opacity-100'} ${imgClasses}`}
           />
         )}
         {lowLoaded && (
@@ -37,7 +40,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, onLoad, onLowLoad }:
               setHighLoaded(true);
               onLoad?.();
             }}
-            className={`absolute inset-0 transition-opacity duration-700 ${highLoaded ? 'opacity-100' : 'opacity-0'} ${imgClasses}`}
+            className={`absolute inset-0 ${fadeClasses} ${highLoaded ? 'opacity-100' : 'opacity-0'} ${imgClasses}`}
           />
         )}
       </div>
