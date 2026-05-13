@@ -44,16 +44,19 @@ function ImageCarousel(props: ImageCarouselProps) {
       onMouseLeave={() => setHovered(false)}
     >
       {props.images.map((image, i) => (
-        <Image
+        <div
           key={image.src}
-          src={image.src}
-          lowSrc={image.lowSrc}
-          alt={`carousel ${i + 1}`}
-          onLowLoad={handleLowLoad}
-          className={`absolute inset-0 transition-opacity duration-700 ${
-            i === current ? 'opacity-100' : 'opacity-0'
-          }`}
-        />
+          className="absolute inset-0"
+          style={{ visibility: i === current ? 'visible' : 'hidden' }}
+        >
+          <Image
+            src={image.src}
+            lowSrc={image.lowSrc}
+            alt={`carousel ${i + 1}`}
+            onLowLoad={handleLowLoad}
+            className="absolute inset-0"
+          />
+        </div>
       ))}
       {props.images[current].photographer && (
         <div className={`absolute bottom-8 right-3 z-10 text-white text-xs px-2 py-1 bg-black/50 rounded transition-opacity duration-300 ${
