@@ -1,6 +1,8 @@
 import Subtitle from '../components/Subtitle';
 import FormSection from '../components/FormSection';
 import FormInput from '../components/FormInput';
+import DiscordButton from '../components/DiscordButton';
+import Button from '../components/Button';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
 import { pageMeta } from '../lib/pageMeta';
@@ -11,6 +13,7 @@ const RECIPIENTS = [
   { label: 'Business Inquiries', email: 'business@purduemixedmedia.com' },
 ];
 const DEFAULT_RECIPIENT = 'General Questions';
+const DISCORD_INVITE = 'https://discord.gg/fYkTeMRSEr';
 
 function ContactPage() {
   usePageTitle(pageMeta.contact.title);
@@ -38,7 +41,7 @@ function ContactPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
       <Subtitle text="Contact" />
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <FormSection text="Name">
           <FormInput name="name" type="text" />
         </FormSection>
@@ -58,12 +61,10 @@ function ContactPage() {
         <FormSection text="Message">
           <FormInput as="textarea" name="body" rows={6} required />
         </FormSection>
-        <button
-          type="submit"
-          className="self-end bg-black text-white font-medium px-6 py-2 rounded hover:bg-gray-800 transition-colors"
-        >
-          Send
-        </button>
+        <div className="flex items-center justify-between gap-4">
+          <DiscordButton href={DISCORD_INVITE} />
+          <Button text="Submit Form" type="submit" />
+        </div>
       </form>
     </div>
   );
