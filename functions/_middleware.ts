@@ -5,6 +5,8 @@
 // The metadata is imported from src/lib/pageMeta.ts so the React app and the
 // middleware share one source of truth.
 
+// DONT WORRY ABOUT THE ERROR, it works fine so :D
+
 import { pageMetaByPath, defaultPageMeta } from '../src/lib/pageMeta';
 
 class TitleRewriter {

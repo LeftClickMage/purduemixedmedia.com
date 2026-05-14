@@ -12,6 +12,12 @@ import EthanWorkingOnSteadicamLow from './EthanWorkingOnSteadicam.jpg?w=200&blur
 import EthanWorkingOnSteadicamHigh from './EthanWorkingOnSteadicam.jpg?w=4096&quality=95&format=webp&imagetools';
 import CircularStarTrailLow from './CircularStarTrail.jpg?w=200&blur=4&format=webp&imagetools';
 import CircularStarTrailHigh from './CircularStarTrail.jpg?w=4096&quality=95&format=webp&imagetools';
+import BridgeButBTSLow from './BridgeButBTS.jpg?w=100&blur=4&format=webp&imagetools';
+import BridgeButBTSHigh from './BridgeButBTS.jpg?w=2048&quality=95&format=webp&imagetools';
+import BridgeButBTS2Low from './BridgeButBTS2.jpg?w=100&blur=4&format=webp&imagetools';
+import BridgeButBTS2High from './BridgeButBTS2.jpg?w=2048&quality=95&format=webp&imagetools';
+import BridgePhotoETLow from './BridgePhotoET.jpg?w=100&blur=4&format=webp&imagetools';
+import BridgePhotoETHigh from './BridgePhotoET.jpg?w=2048&quality=95&format=webp&imagetools';
 
 export const hangout = { lowSrc: HangoutLow, src: HangoutHigh };
 export const camping = { lowSrc: CampingLow, src: CampingHigh };
@@ -20,3 +26,6 @@ export const jonathanChanBTS = { lowSrc: JonathanChanBTSLow, src: JonathanChanBT
 export const filmWorkshopBTS = { lowSrc: FilmWorkshopBTSLow, src: FilmWorkshopBTSHigh };
 export const ethanWorkingOnSteadicam = { lowSrc: EthanWorkingOnSteadicamLow, src: EthanWorkingOnSteadicamHigh };
 export const circularStarTrail = { lowSrc: CircularStarTrailLow, src: CircularStarTrailHigh };
+export const bridgeButBTS = { lowSrc: BridgeButBTSLow, src: BridgeButBTSHigh };
+export const bridgeButBTS2 = { lowSrc: BridgeButBTS2Low, src: BridgeButBTS2High };
+export const bridgePhotoET = { lowSrc: BridgePhotoETLow, src: BridgePhotoETHigh };

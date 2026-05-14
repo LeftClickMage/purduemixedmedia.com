@@ -1,4 +1,5 @@
 import { useMemo, useRef } from 'react';
+import MysticalDots from './MysticalDots';
 
 const movieQuotes = [
   { quote: 'You either die a hero or you live long enough to see yourself become the villain.', movie: 'The Dark Knight' },
@@ -105,24 +106,27 @@ function MovieQuotes() {
         .mq-word > span { display: inline-block; will-change: transform; }
         .mq-intro { display: inline-block; will-change: transform, opacity; }
       `}</style>
-      <p
-        className="text-center text-2xl sm:text-3xl md:text-4xl text-gray-800 px-4 sm:px-8 py-8 sm:py-12 italic"
-        style={{ fontFamily: "'Times New Roman', Times, serif" }}
-      >
-        {quoteWords.map((word, i) => {
-          if (/^\s+$/.test(word)) return word;
-          visibleIndex++;
-          return <Drifting key={i} word={word} drift={quoteDrifts[i]} introDelay={visibleIndex * stepDelay} />;
-        })}
-        {' '}
-        <span className="whitespace-nowrap">
-          {creditWords.map((word, i) => {
+      <div className="relative border-y-5 border-black">
+        <MysticalDots />
+        <p
+          className="relative text-center text-2xl sm:text-3xl md:text-4xl text-gray-800 px-4 sm:px-8 py-8 sm:py-12 italic"
+          style={{ fontFamily: "'Times New Roman', Times, serif" }}
+        >
+          {quoteWords.map((word, i) => {
             if (/^\s+$/.test(word)) return word;
             visibleIndex++;
-            return <Drifting key={i} word={word} drift={creditDrifts[i]} introDelay={visibleIndex * stepDelay} />;
+            return <Drifting key={i} word={word} drift={quoteDrifts[i]} introDelay={visibleIndex * stepDelay} />;
           })}
-        </span>
-      </p>
+          {' '}
+          <span className="whitespace-nowrap">
+            {creditWords.map((word, i) => {
+              if (/^\s+$/.test(word)) return word;
+              visibleIndex++;
+              return <Drifting key={i} word={word} drift={creditDrifts[i]} introDelay={visibleIndex * stepDelay} />;
+            })}
+          </span>
+        </p>
+      </div>
     </>
   );
 }
