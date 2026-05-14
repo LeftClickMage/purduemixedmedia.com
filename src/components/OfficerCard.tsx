@@ -73,8 +73,8 @@ function OfficerCard({ officer }: OfficerCardProps) {
 
   return (
     <li className="silver-glint border border-black rounded-lg p-4 sm:p-6 flex flex-col gap-2">
-      <div className="relative aspect-square mb-2 rounded-md overflow-hidden">
-        <Image src={officer.photo} alt={officer.name} className="h-full" />
+      <div className="square-aspect mb-2 rounded-md overflow-hidden">
+        <Image src={officer.photo} alt={officer.name} className="square-aspect-fill" />
         {officer.role && (
           <div className="absolute top-0 left-0 right-0 z-10 text-white text-base sm:text-lg font-medium text-center px-2 py-2 bg-black/60">
             {officer.role.split(/(webmaster)/i).map((part, i) =>
