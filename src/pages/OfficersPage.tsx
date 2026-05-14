@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react';
 import OfficerCard, { type Officer } from '../components/OfficerCard';
 import Subtitle from '../components/Subtitle';
 import { usePageTitle } from '../lib/usePageTitle';
+import { usePageDescription } from '../lib/usePageDescription';
+import { pageMeta } from '../lib/pageMeta';
 import { fetchSheet } from '../lib/sheets';
 
 function OfficersPage() {
-  usePageTitle('Officers');
+  usePageTitle(pageMeta.officers.title);
+  usePageDescription(pageMeta.officers.description);
   const [officers, setOfficers] = useState<Officer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

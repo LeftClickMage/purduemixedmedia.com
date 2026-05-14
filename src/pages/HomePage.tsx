@@ -3,6 +3,8 @@ import Title from '../components/Title';
 import ImageCarousel from '../components/ImageCarousel';
 import { hangout, camping } from '../assets/images';
 import { usePageTitle } from '../lib/usePageTitle';
+import { usePageDescription } from '../lib/usePageDescription';
+import { pageMeta } from '../lib/pageMeta';
 
 const carouselImages = [
   { ...hangout, photographer: 'Ethan Twu' },
@@ -23,7 +25,8 @@ function pickRandomFont(): string {
 }
 
 function HomePage() {
-  usePageTitle('Home');
+  usePageTitle(pageMeta.home.title);
+  usePageDescription(pageMeta.home.description);
   const titleFont = useRef(pickRandomFont());
   const [titleReady, setTitleReady] = useState(false);
   console.log('Title font:', titleFont.current.match(/'([^']+)'/)?.[1] ?? titleFont.current);
