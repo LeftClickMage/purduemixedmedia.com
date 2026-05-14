@@ -3,7 +3,7 @@ import { useState } from 'react';
 const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
 interface ImageProps {
-  src: string;
+  src?: string;
   lowSrc?: string;
   alt: string;
   className?: string;
@@ -18,9 +18,14 @@ function Image({ src, lowSrc, alt, className, imgClassName, onLoad, onLowLoad }:
   const imgClasses = `w-full h-full object-cover ${imgClassName ?? ''}`;
   const fadeClasses = isIOS ? '' : 'transition-opacity duration-700';
   return (
-    <div className={`overflow-hidden ${className ?? ''}`}>
+    <div className={`overflow-hidden ${src && !lowSrc ? 'bg-black' : 'bg-gray-300'} ${className ?? ''}`}>
       <div className="relative w-full h-full">
-        {lowSrc && (
+        {!src && (
+          <div className="absolute inset-0 flex items-center justify-center text-gray-600 text-sm font-medium">
+            Image Unavailable
+          </div>
+        )}
+        {src && lowSrc && (
           <img
             src={lowSrc}
             alt=""
@@ -32,7 +37,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, onLoad, onLowLoad }:
             className={`absolute inset-0 scale-105 blur-md ${fadeClasses} ${highLoaded ? 'opacity-0' : 'opacity-100'} ${imgClasses}`}
           />
         )}
-        {lowLoaded && (
+        {src && lowLoaded && (
           <img
             src={src}
             alt={alt}

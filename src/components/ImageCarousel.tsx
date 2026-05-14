@@ -14,9 +14,12 @@ interface ImageCarouselProps {
   onFirstLowResLoaded?: () => void;
 }
 
+const MANUAL_PAUSE_MS = 5000;
+
 function ImageCarousel(props: ImageCarouselProps) {
   const [current, setCurrent] = useState(0);
   const [hovered, setHovered] = useState(false);
+  const [manualPauseUntil, setManualPauseUntil] = useState(0);
   const lowResFiredRef = useRef(false);
 
   const handleLowLoad = () => {
@@ -27,11 +30,23 @@ function ImageCarousel(props: ImageCarouselProps) {
 
   useEffect(() => {
     if (props.images.length <= 1) return;
-    const timer = setInterval(() => {
-      setCurrent(i => (i + 1) % props.images.length);
-    }, props.interval);
-    return () => clearInterval(timer);
-  }, [props.images.length, props.interval]);
+    const delay = Math.max(manualPauseUntil - Date.now(), 0);
+    let intervalId: ReturnType<typeof setInterval> | null = null;
+    const startTimeoutId = setTimeout(() => {
+      intervalId = setInterval(() => {
+        setCurrent(i => (i + 1) % props.images.length);
+      }, props.interval);
+    }, delay);
+    return () => {
+      clearTimeout(startTimeoutId);
+      if (intervalId !== null) clearInterval(intervalId);
+    };
+  }, [props.images.length, props.interval, manualPauseUntil]);
+
+  const handleDotClick = (i: number) => {
+    setCurrent(i);
+    setManualPauseUntil(Date.now() + MANUAL_PAUSE_MS);
+  };
 
   useEffect(() => {
     props.onSlideChange?.(current);
@@ -70,7 +85,7 @@ function ImageCarousel(props: ImageCarouselProps) {
           {props.images.map((_, i) => (
             <button
               key={i}
-              onClick={() => setCurrent(i)}
+              onClick={() => handleDotClick(i)}
               className={`w-2 h-2 rounded-full transition-colors ${
                 i === current ? 'bg-white' : 'bg-white/40'
               }`}

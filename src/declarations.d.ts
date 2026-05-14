@@ -32,3 +32,12 @@ declare module "*&imagetools" {
   const src: string;
   export default src;
 }
+
+interface ImportMetaEnv {
+  readonly VITE_SHEETS_API_KEY: string;
+  readonly VITE_OFFICERS_SHEET_ID: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}

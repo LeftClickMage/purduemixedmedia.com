@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
+import OfficersPage from "./pages/OfficersPage";
 import Navbar from "./components/Navbar";
 
 const navLinks = [
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/events" element={<EventsPage />} />
+        <Route path="/officers" element={<OfficersPage />} />
       </Routes>
       
       </div>

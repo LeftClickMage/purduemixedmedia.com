@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@theme {
+  --color-gold-50:  #faf6ec;
+  --color-gold-100: #f3ebd5;
+  --color-gold-200: #e8d8ad;
+  --color-gold-300: #ddc788;
+  --color-gold-400: #d6bd7c;
+  --color-gold-500: #cfb991;
+  --color-gold-600: #b89e6e;
+  --color-gold-700: #8f7a52;
+  --color-gold-800: #6b5b3d;
+  --color-gold-900: #463c28;
+  --color-gold-950: #2b2417;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -71,26 +85,72 @@
 .silver-glint::before {
   content: '';
   position: absolute;
-  inset: 0;
+  top: -10%;
+  bottom: -10%;
+  left: -50%;
+  width: 40%;
   background: linear-gradient(
-    115deg,
-    transparent 30%,
-    rgba(192, 192, 192, 0.35) 45%,
+    90deg,
+    transparent 0%,
+    rgba(192, 192, 192, 0.35) 30%,
     rgba(255, 255, 255, 0.6) 50%,
-    rgba(192, 192, 192, 0.35) 55%,
-    transparent 70%
+    rgba(192, 192, 192, 0.35) 70%,
+    transparent 100%
   );
-  transform: translateX(-100%);
+  transform: translateX(-50%) skewX(-25deg);
   transition: transform 0.9s ease;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
 .silver-glint:hover::before {
-  transform: translateX(100%);
+  transform: translateX(450%) skewX(-25deg);
 }
 
-.silver-glint > * {
+.silver-glint > div:has(img),
+.gold-glint > div:has(img) {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.50);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.silver-glint > div:has(img):hover,
+.gold-glint > div:has(img):hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+}
+
+.gold-glint {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.gold-glint::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: -50%;
+  width: 40%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(207, 185, 145, 0.35) 30%,
+    rgba(243, 235, 213, 0.7) 50%,
+    rgba(207, 185, 145, 0.35) 70%,
+    transparent 100%
+  );
+  transform: translateX(-50%) skewX(-25deg);
+  transition: transform 0.9s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gold-glint:hover::before {
+  transform: translateX(450%) skewX(-25deg);
+}
+
+.gold-glint > * {
   position: relative;
   z-index: 2;
 }
