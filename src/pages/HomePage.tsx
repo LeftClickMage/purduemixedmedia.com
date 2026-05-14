@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
 import Title from '../components/Title';
 import ImageCarousel from '../components/ImageCarousel';
+import MovieQuotes from '../components/MovieQuotes';
+import PresidentIntro from '../components/PresidentIntro';
 import { hangout, camping, ethanTwuBTS, jonathanChanBTS, filmWorkshopBTS } from '../assets/images';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
@@ -26,7 +28,6 @@ function shuffle<T>(arr: T[]): T[] {
 const scriptFonts = [
   "'Pacifico', cursive",
   "'Dancing Script', cursive",
-  "'Great Vibes', cursive",
   "'Lobster', cursive",
   "'Sacramento', cursive",
   "'Caveat', cursive",
@@ -65,6 +66,8 @@ function HomePage() {
           )}
         </div>
       </div>
+      <MovieQuotes />
+      <PresidentIntro />
     </div>
   )
 }
