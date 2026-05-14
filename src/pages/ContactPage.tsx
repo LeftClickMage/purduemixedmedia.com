@@ -36,7 +36,7 @@ function ContactPage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
       <Subtitle text="Contact" />
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-4">
         <FormSection text="Name">

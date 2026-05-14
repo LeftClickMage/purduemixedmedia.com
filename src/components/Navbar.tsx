@@ -18,16 +18,16 @@ function Navbar(props: NavbarProps) {
           <img src={pageIcon} alt="Purdue Mixed Media logo" className="h-10 w-10 rounded-md object-cover border-2 border-black" />
           <span>Purdue Mixed Media</span>
         </RouterLink>
-        <ul className="hidden sm:flex items-center gap-8">
+        <ul className="hidden md:flex items-center gap-8">
           {props.links.map((link) => (
             <li key={link.href}>
               <NavbarLink label={link.label} to={link.href} />
             </li>
           ))}
         </ul>
-        <Hamburger open={open} onToggle={() => setOpen(o => !o)} className="sm:hidden" />
+        <Hamburger open={open} onToggle={() => setOpen(o => !o)} className="md:hidden" />
       </div>
-      <ul className={`sm:hidden flex flex-col px-8 gap-4 overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-96 pb-4' : 'max-h-0'}`}>
+      <ul className={`md:hidden flex flex-col px-8 gap-4 overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-96 pb-4' : 'max-h-0'}`}>
         {props.links.map((link) => (
           <li key={link.href}>
             <NavbarLink label={link.label} to={link.href} onClick={() => setOpen(false)} />

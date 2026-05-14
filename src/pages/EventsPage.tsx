@@ -32,7 +32,7 @@ function EventsPage() {
   }, []);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8 sm:py-12">
+    <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
       <Subtitle text="Upcoming Events" />
       {loading && <p className="text-gray-500">Loading events...</p>}
       {error && <p className="text-red-500">Could not load events: {error}</p>}
