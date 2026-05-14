@@ -11,7 +11,7 @@ function Navbar(props: NavbarProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-b from-gray-50 via-gray-200 to-gray-300 border-b-5 border-black">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-b from-white via-gray-200 to-gray-300 border-b-5 border-black">
       <div className="flex items-center justify-between px-8 py-4">
         <RouterLink to="/" className="text-lg font-semibold tracking-tight text-gray-900">Purdue Mixed Media</RouterLink>
         <ul className="hidden sm:flex items-center gap-8">
