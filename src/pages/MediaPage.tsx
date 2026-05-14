@@ -19,7 +19,7 @@ function MediaPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
-      <Subtitle text="Media" />
+      <Subtitle text="Social Media" />
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         {SOCIALS.map(s => (
           <li key={s.platform}>

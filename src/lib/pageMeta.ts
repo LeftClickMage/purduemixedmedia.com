@@ -18,11 +18,11 @@ export const pageMeta = {
   },
   media: {
     title: 'Media',
-    description: "Purdue Mixed Media's Social Media Pages. View ptojects created by the students, and follow for more.",
+    description: "Purdue Mixed Media's Social Media Pages. View projects created by the students, and follow for more.",
   },
   contact: {
     title: 'Contact',
-    description: 'Get in touch with Purdue Mixed Media.',
+    description: 'Get in touch with Officers from Purdue Mixed Media.',
   },
 } as const;
 

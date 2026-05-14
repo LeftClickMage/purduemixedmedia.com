@@ -35,7 +35,7 @@ function OfficersPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
-      <Subtitle text="Officers" />
+      <Subtitle text="Meet The Officers" />
       {loading && <p className="text-gray-500">Loading officers...</p>}
       {error && <p className="text-red-500">Could not load officers: {error}</p>}
       {!loading && !error && officers.length === 0 && (

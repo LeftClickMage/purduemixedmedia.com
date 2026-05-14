@@ -1,15 +1,27 @@
 import { useRef, useState } from 'react';
 import Title from '../components/Title';
 import ImageCarousel from '../components/ImageCarousel';
-import { hangout, camping } from '../assets/images';
+import { hangout, camping, ethanTwuBTS, jonathanChanBTS, filmWorkshopBTS } from '../assets/images';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
 import { pageMeta } from '../lib/pageMeta';
 
-const carouselImages = [
-  { ...hangout, photographer: 'Ethan Twu' },
+const hangoutImage = { ...hangout, photographer: 'Ethan Twu' };
+const otherImages = [
   { ...camping, photographer: 'Ethan Twu' },
+  { ...ethanTwuBTS, photographer: 'Jonathan Chan' },
+  { ...jonathanChanBTS, photographer: 'Ethan Twu' },
+  { ...filmWorkshopBTS, photographer: 'Ethan Twu' },
 ];
+
+function shuffle<T>(arr: T[]): T[] {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
 
 const scriptFonts = [
   "'Pacifico', cursive",
@@ -28,6 +40,7 @@ function HomePage() {
   usePageTitle(pageMeta.home.title);
   usePageDescription(pageMeta.home.description);
   const titleFont = useRef(pickRandomFont());
+  const carouselImages = useRef([hangoutImage, ...shuffle(otherImages)]);
   const [titleReady, setTitleReady] = useState(false);
   console.log('Title font:', titleFont.current.match(/'([^']+)'/)?.[1] ?? titleFont.current);
 
@@ -41,7 +54,7 @@ function HomePage() {
       <div className="relative w-full carousel-aspect">
         <div className="absolute inset-0">
           <ImageCarousel
-            images={carouselImages}
+            images={carouselImages.current}
             interval={4000}
             onFirstLowResLoaded={() => setTitleReady(true)}
           />
