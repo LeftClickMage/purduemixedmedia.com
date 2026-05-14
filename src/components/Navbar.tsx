@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Hamburger from "./Hamburger";
 import NavbarLink from "./NavbarLink";
+import pageIcon from "../assets/PurdueMixedMediaLogo.jpg";
 
 interface NavbarProps {
   links: { label: string; href: string }[];
@@ -13,7 +14,10 @@ function Navbar(props: NavbarProps) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 w-full bg-gradient-to-b from-white via-gray-200 to-gray-300 border-b-5 border-black">
       <div className="flex items-center justify-between px-8 py-4">
-        <RouterLink to="/" className="text-lg font-semibold tracking-tight text-gray-900">Purdue Mixed Media</RouterLink>
+        <RouterLink to="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight text-gray-900">
+          <img src={pageIcon} alt="Purdue Mixed Media logo" className="h-10 w-10 rounded-md object-cover border-2 border-black" />
+          <span>Purdue Mixed Media</span>
+        </RouterLink>
         <ul className="hidden sm:flex items-center gap-8">
           {props.links.map((link) => (
             <li key={link.href}>
