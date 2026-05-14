@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import Title from '../components/Title';
 import ImageCarousel from '../components/ImageCarousel';
 import MovieQuotes from '../components/MovieQuotes';
-import PresidentIntro from '../components/PresidentIntro';
+import ClubIntro from '../components/ClubIntro';
 import { hangout, camping, ethanTwuBTS, jonathanChanBTS, filmWorkshopBTS } from '../assets/images';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
@@ -47,11 +47,6 @@ function HomePage() {
 
   return (
     <div>
-      <style>{`
-        .carousel-aspect { padding-bottom: 100%; }
-        @media (min-width: 640px) { .carousel-aspect { padding-bottom: 66.66%; } }
-        @media (min-width: 1024px) { .carousel-aspect { padding-bottom: 41.84%; } }
-      `}</style>
       <div className="relative w-full carousel-aspect">
         <div className="absolute inset-0">
           <ImageCarousel
@@ -67,7 +62,7 @@ function HomePage() {
         </div>
       </div>
       <MovieQuotes />
-      <PresidentIntro />
+      <ClubIntro />
     </div>
   )
 }

@@ -10,6 +10,8 @@ import FilmWorkshopBTSLow from './filmWorkshopBTS.jpg?w=200&blur=4&format=webp&i
 import FilmWorkshopBTSHigh from './filmWorkshopBTS.jpg?w=4096&quality=95&format=webp&imagetools';
 import EthanWorkingOnSteadicamLow from './EthanWorkingOnSteadicam.jpg?w=200&blur=4&format=webp&imagetools';
 import EthanWorkingOnSteadicamHigh from './EthanWorkingOnSteadicam.jpg?w=4096&quality=95&format=webp&imagetools';
+import CircularStarTrailLow from './CircularStarTrail.jpg?w=200&blur=4&format=webp&imagetools';
+import CircularStarTrailHigh from './CircularStarTrail.jpg?w=4096&quality=95&format=webp&imagetools';
 
 export const hangout = { lowSrc: HangoutLow, src: HangoutHigh };
 export const camping = { lowSrc: CampingLow, src: CampingHigh };
@@ -17,3 +19,4 @@ export const ethanTwuBTS = { lowSrc: EthanTwuBTSLow, src: EthanTwuBTSHigh };
 export const jonathanChanBTS = { lowSrc: JonathanChanBTSLow, src: JonathanChanBTSHigh };
 export const filmWorkshopBTS = { lowSrc: FilmWorkshopBTSLow, src: FilmWorkshopBTSHigh };
 export const ethanWorkingOnSteadicam = { lowSrc: EthanWorkingOnSteadicamLow, src: EthanWorkingOnSteadicamHigh };
+export const circularStarTrail = { lowSrc: CircularStarTrailLow, src: CircularStarTrailHigh };

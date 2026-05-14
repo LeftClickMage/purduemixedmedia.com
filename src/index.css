@@ -93,6 +93,13 @@
   inset: 0;
 }
 
+.carousel-aspect { padding-bottom: 100%; }
+@media (min-width: 640px) { .carousel-aspect { padding-bottom: 66.66%; } }
+@media (min-width: 1024px) { .carousel-aspect { padding-bottom: 41.84%; } }
+
+.club-intro-aspect { padding-bottom: 100%; }
+@media (min-width: 640px) { .club-intro-aspect { padding-bottom: 66.66%; } }
+
 .silver-glint {
   position: relative;
   overflow: hidden;

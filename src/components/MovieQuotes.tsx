@@ -38,8 +38,8 @@ function randomDrift(): DriftParams {
     durY: 7 + Math.random() * 4,   // 7–11s
     phaseX: Math.random(),
     phaseY: Math.random(),
-    ampX: 0.5 + Math.random() * 1,   // 0.5 - 1.5px
-    ampY: 0.5 + Math.random() * 1,   // 0.5 - 1.5px
+    ampX: 1 + Math.random() * 0.5,   // 1 - 1.5px
+    ampY: 1 + Math.random() * 0.5,   // 1 - 1.5px
   };
 }
 
