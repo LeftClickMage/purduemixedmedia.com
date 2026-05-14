@@ -1,3 +1,8 @@
+export interface PageMeta {
+  title: string;
+  description: string;
+}
+
 export const pageMeta = {
   home: {
     title: 'Home',
@@ -12,3 +17,12 @@ export const pageMeta = {
     description: 'Learn more about the students behind Purdue Mixed Media, view their portfolio, and more.',
   },
 } as const;
+
+// Map URL paths to page meta — used by the Cloudflare middleware.
+export const pageMetaByPath: Record<string, PageMeta> = {
+  '/': { title: `Purdue Mixed Media - ${pageMeta.home.title}`, description: pageMeta.home.description },
+  '/events': { title: `Purdue Mixed Media - ${pageMeta.events.title}`, description: pageMeta.events.description },
+  '/officers': { title: `Purdue Mixed Media - ${pageMeta.officers.title}`, description: pageMeta.officers.description },
+};
+
+export const defaultPageMeta: PageMeta = pageMetaByPath['/'];
