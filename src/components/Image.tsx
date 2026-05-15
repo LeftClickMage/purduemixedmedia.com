@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 
 const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
@@ -8,6 +8,8 @@ interface ImageProps {
   alt: string;
   className?: string;
   imgClassName?: string;
+  /** Inline style applied to both the low-res and high-res <img> elements. Useful for dynamic filters/transforms. */
+  imgStyle?: CSSProperties;
   /** When true, the image dictates the container's height (intrinsic) instead of filling its parent. */
   naturalHeight?: boolean;
   /** Optional photographer credit shown in the bottom-right corner on hover. */
@@ -31,7 +33,7 @@ function PhotoCredit({ name, hovered }: PhotoCreditProps) {
   );
 }
 
-function Image({ src, lowSrc, alt, className, imgClassName, naturalHeight, photographer, onLoad, onLowLoad }: ImageProps) {
+function Image({ src, lowSrc, alt, className, imgClassName, imgStyle, naturalHeight, photographer, onLoad, onLowLoad }: ImageProps) {
   const [lowLoaded, setLowLoaded] = useState(!lowSrc);
   const [highLoaded, setHighLoaded] = useState(false);
   const [hovered, setHovered] = useState(false);
@@ -70,6 +72,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, naturalHeight, photo
               setLowLoaded(true);
               onLowLoad?.();
             }}
+            style={imgStyle}
             className={`scale-105 blur-md ${fadeClasses} ${highLoaded ? 'opacity-0' : 'opacity-100'} ${showHighInFlow ? overlayClasses : fitClasses}`}
           />
         )}
@@ -81,6 +84,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, naturalHeight, photo
               setHighLoaded(true);
               onLoad?.();
             }}
+            style={imgStyle}
             className={`${fadeClasses} ${highLoaded ? 'opacity-100' : 'opacity-0'} ${showHighInFlow ? fitClasses : overlayClasses}`}
           />
         )}
@@ -110,6 +114,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, naturalHeight, photo
               setLowLoaded(true);
               onLowLoad?.();
             }}
+            style={imgStyle}
             className={`absolute inset-0 scale-105 blur-md ${fadeClasses} ${highLoaded ? 'opacity-0' : 'opacity-100'} ${imgClasses}`}
           />
         )}
@@ -121,6 +126,7 @@ function Image({ src, lowSrc, alt, className, imgClassName, naturalHeight, photo
               setHighLoaded(true);
               onLoad?.();
             }}
+            style={imgStyle}
             className={`absolute inset-0 ${fadeClasses} ${highLoaded ? 'opacity-100' : 'opacity-0'} ${imgClasses}`}
           />
         )}

@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react';
+
 interface SubtitleProps {
-  text: string;
+  text: ReactNode;
   className?: string;
 }
 
