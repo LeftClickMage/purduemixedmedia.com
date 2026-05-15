@@ -8,7 +8,7 @@ const CLUB_MEMO = "Our mission is to bring creative minds together to create the
 const CLUB_MEMO2 = "Whether that be an eye-catching photo...";
 const CLUB_MEMO3 = "Or an award winning film...";
 const CLUB_MEMO4 = (
-  <>We'll bring your <em>Vision</em> to <em>Fruition</em>.</>
+  <>We'll bring your <em className="italic">Vision</em> to <em className="italic">Fruition</em>.</>
 );
 function ClubIntro() {
   const [bridgeVisible, setBridgeVisible] = useState(false);
