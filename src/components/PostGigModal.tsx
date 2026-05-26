@@ -6,11 +6,17 @@ interface PostGigModalProps {
   onPosted: () => void;
 }
 
+function nowForDatetimeLocal(): string {
+  const d = new Date();
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
   const [posterName, setPosterName] = useState('');
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
-  const [startTime, setStartTime] = useState('');
+  const [startTime, setStartTime] = useState(nowForDatetimeLocal);
   const [price, setPrice] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
