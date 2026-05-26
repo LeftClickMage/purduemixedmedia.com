@@ -54,7 +54,7 @@ function GigsPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
         <Subtitle text="Request Gigs" />
-        <p className="text-gray-700 mb-6">Log in with Discord to view available gigs.</p>
+        <p className="text-gray-700 mb-6">Log in with Discord to request videography, photography, or any content creation services.</p>
         <Button text="Log in with Discord" href="/auth/login?returnTo=/gigs" />
       </div>
     );
