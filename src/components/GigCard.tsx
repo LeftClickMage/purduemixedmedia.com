@@ -2,6 +2,7 @@ import Image from './Image';
 import Button from './Button';
 import MiniTitle from './MiniTitle';
 import Text from './Text';
+import EventDate from './EventDate';
 import type { DiscordEvent } from './EventCard';
 
 interface GigCardProps {
@@ -30,6 +31,7 @@ function GigCard({ gig }: GigCardProps) {
           <span className="text-sm bg-black text-white px-2 py-1 rounded shrink-0">{gig.entity_metadata.location}</span>
         )}
       </div>
+      <EventDate startTime={gig.scheduled_start_time} endTime={gig.scheduled_end_time} />
       {gig.description && <Text text={gig.description} />}
       {discordUrl && (
         <Button

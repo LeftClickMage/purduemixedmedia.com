@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
 import Image from './Image';
 import Button from './Button';
 import MiniTitle from './MiniTitle';
 import Text from './Text';
 import SubText from './SubText';
-import { getCountdown, formatShortDate } from '../lib/eventCountdown';
+import EventDate from './EventDate';
 
 export interface DiscordEvent {
   id: string;
@@ -25,16 +24,6 @@ interface EventCardProps {
 function EventCard({ event }: EventCardProps) {
   const discordUrl = event.guild_id ? `https://discord.com/events/${event.guild_id}/${event.id}` : null;
   const imageBaseUrl = event.image ? `https://cdn.discordapp.com/guild-events/${event.id}/${event.image}.png` : null;
-
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 30_000);
-    return () => clearInterval(id);
-  }, []);
-
-  const shortDate = formatShortDate(event.scheduled_start_time);
-  const countdown = getCountdown(event.scheduled_start_time, event.scheduled_end_time, now);
-  const isUrgent = countdown.status === 'soon' || countdown.status === 'in-progress';
 
   return (
     <li className="silver-glint border border-black rounded-lg p-4 sm:p-6 flex flex-col gap-2">
@@ -63,9 +52,7 @@ function EventCard({ event }: EventCardProps) {
       )}
       {/* Date row: date left; on mobile shows interested count on right, on desktop shows the View on Discord button on right */}
       <div className="flex items-center justify-between gap-2">
-        <p className="text-sm text-gray-500">
-          {shortDate} · <span className={isUrgent ? 'text-gold-700 font-medium' : ''}>{countdown.text}</span>
-        </p>
+        <EventDate startTime={event.scheduled_start_time} endTime={event.scheduled_end_time} />
         {/* Mobile only */}
         {event.user_count !== undefined && (
           <SubText text={`🙋 ${event.user_count} interested`} className="sm:hidden shrink-0" />

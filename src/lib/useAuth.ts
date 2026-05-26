@@ -13,6 +13,17 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (import.meta.env.DEV && location.hostname === 'localhost') {
+      setSession({
+        id: 'dev',
+        username: 'dev',
+        avatar: null,
+        member: true,
+        exp: Math.floor(Date.now() / 1000) + 3600,
+      });
+      setLoading(false);
+      return;
+    }
     fetch('/auth/me', { credentials: 'same-origin' })
       .then(r => r.json())
       .then((data: Session | null) => setSession(data))
