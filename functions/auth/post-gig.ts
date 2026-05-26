@@ -14,6 +14,7 @@ interface PostGigBody {
   endTime?: string; // ISO
   price: string;
   posterName: string;
+  email: string;
 }
 
 function bad(message: string, status = 400): Response {
@@ -35,9 +36,12 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
     return bad('Invalid JSON');
   }
 
-  const { description, location, startTime, price, posterName } = body;
-  if (!description || !location || !startTime || !price || !posterName) {
+  const { description, location, startTime, price, posterName, email } = body;
+  if (!description || !location || !startTime || !price || !posterName || !email) {
     return bad('Missing required fields');
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return bad('Invalid email address');
   }
 
   const start = new Date(startTime);
@@ -48,7 +52,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
   const end = body.endTime ? new Date(body.endTime) : new Date(start.getTime() + 2 * 60 * 60 * 1000);
   if (Number.isNaN(end.getTime()) || end <= start) return bad('Invalid endTime');
 
-  const fullDescription = `${description}\n\nPosted by ${posterName} (Discord: ${session.username})`;
+  const fullDescription = `${description}\n\nPosted by ${posterName}\nEmail: ${email}\nDiscord Username: ${session.username}`;
 
   const payload = {
     name: price,
