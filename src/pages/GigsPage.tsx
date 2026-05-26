@@ -4,6 +4,7 @@ import type { DiscordEvent } from '../components/EventCard';
 import Subtitle from '../components/Subtitle';
 import Button from '../components/Button';
 import Text from '../components/Text';
+import DiscordButton from '../components/DiscordButton';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
 import { pageMeta } from '../lib/pageMeta';
@@ -71,7 +72,10 @@ function GigsPage() {
         <p className="text-gray-700 mb-6">
           Gigs are only available to certain Purdue Mixed Media members. Please contact the President or Business Manager to request access.
         </p>
-        <Button text="View Officers" href="/officers" />
+        <div className="flex flex-wrap items-center gap-3">
+          <Button text="View Officers" href="/officers" />
+          <DiscordButton href="https://discord.gg/fYkTeMRSEr" />
+        </div>
       </div>
     );
   }
