@@ -53,7 +53,7 @@ function GigsPage() {
   if (!session) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
-        <Subtitle text="Available Gigs" />
+        <Subtitle text="Request Gigs" />
         <p className="text-gray-700 mb-6">Log in with Discord to view available gigs.</p>
         <Button text="Log in with Discord" href="/auth/login?returnTo=/gigs" />
       </div>
@@ -63,6 +63,16 @@ function GigsPage() {
   const titleRow = (
     <div className="flex items-baseline justify-between gap-4 flex-wrap">
       <Subtitle text="Available Gigs" />
+      <div className="flex items-baseline gap-3 mb-6 sm:mb-8">
+        <Text text={`Logged in as ${session.username}`} className="text-sm" />
+        <a href="/auth/logout" className="text-sm text-gray-700 underline hover:text-black">Log out</a>
+      </div>
+    </div>
+  );
+
+  const titleRowNoAccess = (
+    <div className="flex items-baseline justify-between gap-4 flex-wrap">
+      <Subtitle text="Request Gigs" />
       <div className="flex items-baseline gap-3 mb-6 sm:mb-8">
         <Text text={`Logged in as ${session.username}`} className="text-sm" />
         <a href="/auth/logout" className="text-sm text-gray-700 underline hover:text-black">Log out</a>
@@ -84,7 +94,7 @@ function GigsPage() {
   if (!session.member) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
-        {titleRow}
+        {titleRowNoAccess}
         <p className="text-gray-700 mb-6">
           Gigs are only available to certain Purdue Mixed Media members. Please contact the President or Business Manager to request access.
         </p>
