@@ -12,6 +12,10 @@ export const pageMeta = {
     title: 'Events',
     description: 'View all Purdue Mixed Media events! Including photo walks, workshops, hangougts, and more.',
   },
+  gigs: {
+    title: 'Gigs',
+    description: 'Browse available paid gigs for Purdue Mixed Media members. Each listing shows the budget and what the client is looking for.',
+  },
   officers: {
     title: 'Officers',
     description: 'Learn more about the students behind Purdue Mixed Media, view their portfolio, and more.',
@@ -30,6 +34,7 @@ export const pageMeta = {
 export const pageMetaByPath: Record<string, PageMeta> = {
   '/': { title: `Purdue Mixed Media - ${pageMeta.home.title}`, description: pageMeta.home.description },
   '/events': { title: `Purdue Mixed Media - ${pageMeta.events.title}`, description: pageMeta.events.description },
+  '/gigs': { title: `Purdue Mixed Media - ${pageMeta.gigs.title}`, description: pageMeta.gigs.description },
   '/officers': { title: `Purdue Mixed Media - ${pageMeta.officers.title}`, description: pageMeta.officers.description },
   '/media': { title: `Purdue Mixed Media - ${pageMeta.media.title}`, description: pageMeta.media.description },
   '/contact': { title: `Purdue Mixed Media - ${pageMeta.contact.title}`, description: pageMeta.contact.description },

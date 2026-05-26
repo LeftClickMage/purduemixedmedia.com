@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import EventsPage from "./pages/EventsPage";
+import GigsPage from "./pages/GigsPage";
 import OfficersPage from "./pages/OfficersPage";
 import MediaPage from "./pages/MediaPage";
 import ContactPage from "./pages/ContactPage";
@@ -10,6 +11,7 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Officers", href: "/officers" },
   { label: "Events", href: "/events" },
+  { label: "Gigs", href: "/gigs" },
   { label: "Media", href: "/media" },
   { label: "Contact", href: "/contact" },
 ];
@@ -22,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/events" element={<EventsPage />} />
+        <Route path="/gigs" element={<GigsPage />} />
         <Route path="/officers" element={<OfficersPage />} />
         <Route path="/media" element={<MediaPage />} />
         <Route path="/contact" element={<ContactPage />} />
