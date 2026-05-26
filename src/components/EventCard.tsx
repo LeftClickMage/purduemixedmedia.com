@@ -5,6 +5,13 @@ import Text from './Text';
 import SubText from './SubText';
 import EventDate from './EventDate';
 
+export interface DiscordUser {
+  id: string;
+  username: string;
+  global_name?: string | null;
+  avatar?: string | null;
+}
+
 export interface DiscordEvent {
   id: string;
   guild_id?: string;
@@ -15,6 +22,8 @@ export interface DiscordEvent {
   entity_metadata?: { location?: string };
   image?: string;
   user_count?: number;
+  creator?: DiscordUser;
+  creator_id?: string;
 }
 
 interface EventCardProps {

@@ -32,6 +32,9 @@ function GigCard({ gig }: GigCardProps) {
         )}
       </div>
       <EventDate startTime={gig.scheduled_start_time} endTime={gig.scheduled_end_time} />
+      {gig.creator && (
+        <p className="text-sm text-gray-500">Posted by {gig.creator.global_name ?? gig.creator.username}</p>
+      )}
       {gig.description && <Text text={gig.description} />}
       {discordUrl && (
         <Button
