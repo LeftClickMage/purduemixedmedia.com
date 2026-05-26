@@ -5,6 +5,7 @@ import Subtitle from '../components/Subtitle';
 import Button from '../components/Button';
 import Text from '../components/Text';
 import DiscordButton from '../components/DiscordButton';
+import PostGigModal from '../components/PostGigModal';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
 import { pageMeta } from '../lib/pageMeta';
@@ -19,6 +20,8 @@ function GigsPage() {
   const [gigs, setGigs] = useState<DiscordEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [showPostModal, setShowPostModal] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     if (!session?.member) return;
@@ -36,7 +39,7 @@ function GigsPage() {
         setError(err.message);
         setLoading(false);
       });
-  }, [session?.member]);
+  }, [session?.member, refreshKey]);
 
   if (authLoading) {
     return (
@@ -67,6 +70,17 @@ function GigsPage() {
     </div>
   );
 
+  const postGigButton = (
+    <Button text="Post Gig" onClick={() => setShowPostModal(true)} />
+  );
+
+  const modal = showPostModal ? (
+    <PostGigModal
+      onClose={() => setShowPostModal(false)}
+      onPosted={() => setRefreshKey(k => k + 1)}
+    />
+  ) : null;
+
   if (!session.member) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
@@ -75,9 +89,11 @@ function GigsPage() {
           Gigs are only available to certain Purdue Mixed Media members. Please contact the President or Business Manager to request access.
         </p>
         <div className="flex flex-wrap items-center gap-3">
+          {postGigButton}
           <Button text="View Officers" href="/officers" />
           <DiscordButton href="https://discord.gg/fYkTeMRSEr" />
         </div>
+        {modal}
       </div>
     );
   }
@@ -85,6 +101,7 @@ function GigsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
       {titleRow}
+      <div className="mb-6">{postGigButton}</div>
       {loading && <p className="text-gray-500">Loading gigs...</p>}
       {error && <p className="text-red-500">Could not load gigs: {error}</p>}
       {!loading && !error && gigs.length === 0 && (
@@ -95,6 +112,7 @@ function GigsPage() {
           <GigCard key={gig.id} gig={gig} />
         ))}
       </ul>
+      {modal}
     </div>
   );
 }
