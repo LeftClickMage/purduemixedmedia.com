@@ -34,7 +34,8 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.message ?? `Request failed (${res.status})`);
+        const detail = data.detail ? ` — ${typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)}` : '';
+        throw new Error(`${data.message ?? `Request failed (${res.status})`}${detail}`);
       }
       onPosted();
       onClose();
