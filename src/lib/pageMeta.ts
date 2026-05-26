@@ -14,7 +14,7 @@ export const pageMeta = {
   },
   gigs: {
     title: 'Gigs',
-    description: 'Browse available paid gigs for certain Purdue Mixed Media members. Each listing shows the budget and what the client is looking for.',
+    description: 'Browse available gigs for certain Purdue Mixed Media members. Each listing shows the budget and what the client is looking for.',
   },
   officers: {
     title: 'Officers',
