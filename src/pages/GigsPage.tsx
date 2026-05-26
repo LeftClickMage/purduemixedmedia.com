@@ -96,10 +96,15 @@ function GigsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
         {titleRowNoAccess}
         <p className="text-gray-700 mb-6">
-          Gigs are only available to certain Purdue Mixed Media members. Please contact the President or Business Manager to request access.
+          Need a photographer, videographer, or creator for an event or project? Post a gig and our members will reach out to you.
+        </p>
+        <div className="flex flex-wrap items-center gap-3 mb-8">
+          {postGigButton}
+        </div>
+        <p className="text-sm text-gray-500 mb-3">
+          Looking to take on gigs as a member? Contact the President or Business Manager by email or discord.
         </p>
         <div className="flex flex-wrap items-center gap-3">
-          {postGigButton}
           <Button text="View Officers" href="/officers" />
           <DiscordButton href="https://discord.gg/fYkTeMRSEr" />
         </div>
