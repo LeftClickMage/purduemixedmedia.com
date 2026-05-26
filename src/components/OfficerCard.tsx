@@ -25,37 +25,51 @@ function OfficerCard({ officer }: OfficerCardProps) {
   const [isClamped, setIsClamped] = useState(false);
   const descRef = useRef<HTMLParagraphElement>(null);
 
-  // Detect whether the collapsed description is overflowing (so we know whether to make it clickable).
+  // Detect whether the description is overflowing the collapsed height. We measure scrollHeight
+  // against the fixed collapsed cap rather than clientHeight, since clientHeight grows when the
+  // surrounding grid row stretches to match an expanded sibling.
   useEffect(() => {
     if (phase !== 'collapsed') return;
     const el = descRef.current;
     if (!el) return;
-    const check = () => setIsClamped(el.scrollHeight > el.clientHeight + 1);
+    const check = () => {
+      const rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      const collapsedPx = parseFloat(COLLAPSED_HEIGHT) * rem;
+      setIsClamped(el.scrollHeight > collapsedPx + 1);
+    };
     check();
     const observer = new ResizeObserver(check);
     observer.observe(el);
-    return () => observer.disconnect();
+    window.addEventListener('resize', check);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', check);
+    };
   }, [officer.description, phase]);
 
-  const handleToggle = () => {
+  const expand = () => {
     const el = descRef.current;
     if (!el) return;
-    if (phase === 'collapsed') {
-      if (!isClamped) return;
-      const target = el.scrollHeight;
-      setMaxHeight(`${el.clientHeight}px`); // anchor from current clamped height
-      setPhase('expanding');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setMaxHeight(`${target}px`));
-      });
-    } else if (phase === 'expanded') {
-      const current = el.scrollHeight;
-      setMaxHeight(`${current}px`); // anchor from full height
-      setPhase('collapsing');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setMaxHeight(COLLAPSED_HEIGHT));
-      });
-    }
+    if (phase !== 'collapsed' && phase !== 'collapsing') return;
+    if (!isClamped && phase === 'collapsed') return;
+    const target = el.scrollHeight;
+    setMaxHeight(`${el.clientHeight}px`);
+    setPhase('expanding');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setMaxHeight(`${target}px`));
+    });
+  };
+
+  const collapse = () => {
+    const el = descRef.current;
+    if (!el) return;
+    if (phase !== 'expanded' && phase !== 'expanding') return;
+    const current = el.scrollHeight;
+    setMaxHeight(`${current}px`);
+    setPhase('collapsing');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => setMaxHeight(COLLAPSED_HEIGHT));
+    });
   };
 
   const handleTransitionEnd = () => {
@@ -69,7 +83,7 @@ function OfficerCard({ officer }: OfficerCardProps) {
   };
 
   const isInteractive = isClamped || phase !== 'collapsed';
-  const showLineClamp = phase === 'collapsed';
+  const showLineClamp = phase === 'collapsed' && isClamped;
 
   return (
     <li className="silver-glint border border-black rounded-lg p-4 sm:p-6 flex flex-col gap-2">
@@ -88,10 +102,11 @@ function OfficerCard({ officer }: OfficerCardProps) {
       <MiniTitle text={officer.name} />
       <p
         ref={descRef}
-        onClick={handleToggle}
+        onMouseEnter={expand}
+        onMouseLeave={collapse}
         onTransitionEnd={handleTransitionEnd}
-        className={`text-gray-700 flex-1 overflow-hidden transition-[max-height] duration-300 ease-in-out ${showLineClamp ? 'line-clamp-3' : ''} ${isInteractive ? 'cursor-pointer' : ''}`}
-        style={{ maxHeight }}
+        className={`text-gray-700 overflow-hidden transition-[max-height] duration-300 ease-in-out ${showLineClamp ? 'line-clamp-3' : ''} ${isInteractive ? 'cursor-pointer' : ''}`}
+        style={{ maxHeight: maxHeight ?? (phase === 'collapsed' ? COLLAPSED_HEIGHT : undefined) }}
       >
         {officer.description}
       </p>

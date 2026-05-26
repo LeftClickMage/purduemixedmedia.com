@@ -41,7 +41,7 @@ function OfficersPage() {
       {!loading && !error && officers.length === 0 && (
         <p className="text-gray-500">No officers listed.</p>
       )}
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 items-start">
         {officers.map((officer, i) => (
           officer.name && officer.description && officer.role && officer.photo && <OfficerCard key={i} officer={officer} />
         ))}

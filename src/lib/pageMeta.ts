@@ -14,7 +14,7 @@ export const pageMeta = {
   },
   gigs: {
     title: 'Gigs',
-    description: 'Browse available gigs for certain Purdue Mixed Media members. Each listing shows the budget and what the client is looking for.',
+    description: 'Request photo or video work from trusted videographers and photographers from Purdue Mixed Media.',
   },
   officers: {
     title: 'Officers',
