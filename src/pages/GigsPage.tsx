@@ -3,6 +3,7 @@ import GigCard from '../components/GigCard';
 import type { DiscordEvent } from '../components/EventCard';
 import Subtitle from '../components/Subtitle';
 import Button from '../components/Button';
+import Text from '../components/Text';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
 import { pageMeta } from '../lib/pageMeta';
@@ -55,12 +56,20 @@ function GigsPage() {
     );
   }
 
+  const sessionBar = (
+    <div className="flex items-center justify-end gap-3 mb-4">
+      <Text text={`Logged in as ${session.username}`} className="text-sm" />
+      <a href="/auth/logout" className="text-sm text-gray-700 underline hover:text-black">Log out</a>
+    </div>
+  );
+
   if (!session.member) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
+        {sessionBar}
         <Subtitle text="Available Gigs" />
         <p className="text-gray-700 mb-6">
-          Gigs are only available to Purdue Mixed Media members. Please contact the President or Business Manager to request access.
+          Gigs are only available to certain Purdue Mixed Media members. Please contact the President or Business Manager to request access.
         </p>
         <Button text="View Officers" href="/officers" />
       </div>
@@ -69,6 +78,7 @@ function GigsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
+      {sessionBar}
       <Subtitle text="Available Gigs" />
       {loading && <p className="text-gray-500">Loading gigs...</p>}
       {error && <p className="text-red-500">Could not load gigs: {error}</p>}
