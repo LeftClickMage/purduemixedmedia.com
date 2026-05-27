@@ -9,7 +9,7 @@ interface FramedPhotoProps {
   photographer?: string;
   /** Optional centered text overlaid on the photo. */
   memo?: ReactNode;
-  /** If provided, the memo's scroll observer only attaches after this becomes true. */
+  /** If provided, the memo's scroll observer only attaches after this becomes true.*/
   memoGateOpen?: boolean;
   /** When true (default), the entire frame fades up when scrolled into view. */
   animateSection?: boolean;
