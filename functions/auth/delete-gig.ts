@@ -64,20 +64,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
     });
   }
 
-  console.log('[delete-gig] env present:', {
-    hasWorkerUrl: !!env.GIGS_WORKER_URL,
-    hasSecret: !!env.CACHE_BUST_SECRET,
-    workerUrl: env.GIGS_WORKER_URL,
-  });
   if (env.GIGS_WORKER_URL && env.CACHE_BUST_SECRET) {
+    const base = env.GIGS_WORKER_URL.replace(/\/$/, '');
     try {
-      const bustRes = await fetch(`${env.GIGS_WORKER_URL.replace(/\/$/, '')}/bust?type=gigs`, {
+      // Tell the worker to filter this ID out of future responses until Discord catches up.
+      await fetch(`${base}/forget?type=gigs&id=${encodeURIComponent(eventId)}`, {
         method: 'POST',
         headers: { 'X-Cache-Bust-Secret': env.CACHE_BUST_SECRET },
       });
-      console.log('[delete-gig] bust response:', bustRes.status, await bustRes.text());
-    } catch (err) {
-      console.log('[delete-gig] bust error:', err);
+    } catch {
+      // ignore
     }
   }
 
