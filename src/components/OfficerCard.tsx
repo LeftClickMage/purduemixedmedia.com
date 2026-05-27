@@ -82,11 +82,14 @@ function OfficerCard({ officer }: OfficerCardProps) {
     }
   };
 
-  const isInteractive = isClamped || phase !== 'collapsed';
   const showLineClamp = phase === 'collapsed' && isClamped;
 
   return (
-    <li className="silver-glint border border-black rounded-lg p-4 sm:p-6 flex flex-col gap-2">
+    <li
+      onMouseEnter={expand}
+      onMouseLeave={collapse}
+      className="silver-glint border border-black rounded-lg p-4 sm:p-6 flex flex-col gap-2"
+    >
       <div className="square-aspect mb-2 rounded-md overflow-hidden">
         <Image src={officer.photo} alt={officer.name} className="square-aspect-fill" />
         {officer.role && (
@@ -102,10 +105,8 @@ function OfficerCard({ officer }: OfficerCardProps) {
       <MiniTitle text={officer.name} />
       <p
         ref={descRef}
-        onMouseEnter={expand}
-        onMouseLeave={collapse}
         onTransitionEnd={handleTransitionEnd}
-        className={`text-gray-700 overflow-hidden transition-[max-height] duration-300 ease-in-out ${showLineClamp ? 'line-clamp-3' : ''} ${isInteractive ? 'cursor-pointer' : ''}`}
+        className={`text-gray-700 overflow-hidden transition-[max-height] duration-300 ease-in-out ${showLineClamp ? 'line-clamp-3' : ''}`}
         style={{ maxHeight: maxHeight ?? (phase === 'collapsed' ? COLLAPSED_HEIGHT : undefined) }}
       >
         {officer.description}
