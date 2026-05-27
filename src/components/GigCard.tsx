@@ -39,7 +39,7 @@ function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
   const [cancelError, setCancelError] = useState<string | null>(null);
 
   async function handleCancel() {
-    if (!confirm('Cancel this gig? This will delete the event from Discord.')) return;
+    if (!confirm('Are you sure you want to cancel this posting?')) return;
     setCancelling(true);
     setCancelError(null);
     try {
@@ -90,7 +90,7 @@ function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
           )}
           {onCancel && (
             <Button
-              text={cancelling ? 'Cancelling…' : 'Cancel Gig'}
+              text={cancelling ? 'Cancelling…' : 'Cancel Posting'}
               onClick={handleCancel}
               className="mt-2"
             />
