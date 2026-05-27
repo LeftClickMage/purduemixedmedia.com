@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import Text from '../components/Text';
 import DiscordButton from '../components/DiscordButton';
 import PostGigModal from '../components/PostGigModal';
+import YourGigPostings from '../components/YourGigPostings';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
 import { pageMeta } from '../lib/pageMeta';
@@ -105,14 +106,7 @@ function GigsPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
         {titleRowNoAccess}
         {myGigs.length > 0 ? (
-          <>
-            <h3 className="text-xl font-semibold mb-4">Your Gig Postings</h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
-              {myGigs.map(gig => (
-                <GigCard key={gig.id} gig={gig} hideButtons onCancel={handleCancel} />
-              ))}
-            </ul>
-          </>
+          <YourGigPostings gigs={myGigs} onCancel={handleCancel} className="mb-8" />
         ) : (
           <p className="text-gray-700 mb-6">
             Need a photographer, videographer, or creator for an event or project? Post a gig and our members will reach out to you.
@@ -147,16 +141,7 @@ function GigsPage() {
           <GigCard key={gig.id} gig={gig} />
         ))}
       </ul>
-      {myGigs.length > 0 && (
-        <>
-          <h3 className="text-xl font-semibold mt-10 mb-4">Your Gig Postings</h3>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-            {myGigs.map(gig => (
-              <GigCard key={gig.id} gig={gig} hideButtons />
-            ))}
-          </ul>
-        </>
-      )}
+      <YourGigPostings gigs={myGigs} onCancel={handleCancel} className="mt-10" />
       {modal}
     </div>
   );
