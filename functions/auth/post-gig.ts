@@ -55,7 +55,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
   const end = body.endTime ? new Date(body.endTime) : new Date(start.getTime() + 2 * 60 * 60 * 1000);
   if (Number.isNaN(end.getTime()) || end <= start) return bad('Invalid endTime');
 
-  const fullDescription = `${description}\n\nPosted by ${posterName}\nEmail: ${email}\nDiscord Username: ${session.username}`;
+  const gigId = Math.floor(100000 + Math.random() * 900000).toString();
+  const fullDescription = `${description}\n\nPosted by ${posterName}\nEmail: ${email}\nDiscord Username: ${session.username}\nGig ID: ${gigId}`;
 
   const payload = {
     name: price,
@@ -113,7 +114,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content: `📣 **New gig posted: ${price}**\nLocation: ${location}\nPosted by ${posterName}\n${eventUrl}`,
+          content: `📣 **New gig posted: ${price}**\nLocation: ${location}\nPosted by ${posterName}\nGig ID: ${gigId}\n${eventUrl}`,
           allowed_mentions: { parse: [] },
         }),
       });

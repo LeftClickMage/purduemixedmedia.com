@@ -12,20 +12,24 @@ interface GigCardProps {
   onCancel?: (eventId: string) => void;
 }
 
-function parsePoster(description?: string): { poster: string | null; email: string | null; body: string } {
-  if (!description) return { poster: null, email: null, body: '' };
+function parsePoster(description?: string): { poster: string | null; email: string | null; gigId: string | null; body: string } {
+  if (!description) return { poster: null, email: null, gigId: null, body: '' };
   const idx = description.lastIndexOf('Posted by ');
-  if (idx === -1) return { poster: null, email: null, body: description };
+  if (idx === -1) return { poster: null, email: null, gigId: null, body: description };
   let tail = description.slice(idx + 'Posted by '.length);
   const emailMatch = tail.match(/\nEmail:\s*([^\n]+)/);
   const email = emailMatch ? emailMatch[1].trim() : null;
+  const idMatch = tail.match(/\nGig ID:\s*([0-9]+)/);
+  const gigId = idMatch ? idMatch[1] : null;
   tail = tail.replace(/\nEmail:\s*[^\n]*/, '');
+  tail = tail.replace(/\nGig ID:\s*[^\n]*/, '');
   tail = tail.replace(/\n?Discord Username:\s*[^\n]*$/, '').trim();
   tail = tail.replace(/\s*\(Discord:[^)]*\)\s*$/, '').trim();
   const body = description.slice(0, idx).trim();
   return {
     poster: tail || null,
     email,
+    gigId,
     body: body || description,
   };
 }
@@ -34,7 +38,7 @@ function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
   const discordUrl = gig.guild_id ? `https://discord.com/events/${gig.guild_id}/${gig.id}` : null;
   const imageBaseUrl = gig.image ? `https://cdn.discordapp.com/guild-events/${gig.id}/${gig.image}.png` : null;
 
-  const { poster, email, body } = parsePoster(gig.description);
+  const { poster, email, gigId, body } = parsePoster(gig.description);
   const [cancelling, setCancelling] = useState(false);
   const [cancelError, setCancelError] = useState<string | null>(null);
 
@@ -83,6 +87,9 @@ function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
         <p className="text-sm text-gray-500">Posted by {poster}</p>
       )}
       {body && <Text text={body} />}
+      {gigId && (
+        <p className="text-xs text-gray-500">Gig ID: {gigId}</p>
+      )}
       {hideButtons ? (
         <>
           {email && (

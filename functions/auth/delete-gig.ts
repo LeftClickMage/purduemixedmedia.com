@@ -77,6 +77,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
 
   if (env.GIGS_NOTIFY_CHANNEL_ID) {
     const locationLine = event.entity_metadata?.location ? `\nLocation: ${event.entity_metadata.location}` : '';
+    const idMatch = event.description?.match(/Gig ID:\s*([0-9]+)/);
+    const idLine = idMatch ? `\nGig ID: ${idMatch[1]}` : '';
     try {
       await fetch(`https://discord.com/api/v10/channels/${env.GIGS_NOTIFY_CHANNEL_ID}/messages`, {
         method: 'POST',
@@ -85,7 +87,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content: `❌ **Gig cancelled: ${event.name ?? 'Untitled'}**${locationLine}\nCancelled by ${session.username}`,
+          content: `❌ **Gig cancelled: ${event.name ?? 'Untitled'}**${locationLine}${idLine}\nCancelled by ${session.username}`,
           allowed_mentions: { parse: [] },
         }),
       });
