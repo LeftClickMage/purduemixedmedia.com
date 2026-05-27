@@ -67,13 +67,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
   if (env.GIGS_WORKER_URL && env.CACHE_BUST_SECRET) {
     const base = env.GIGS_WORKER_URL.replace(/\/$/, '');
     try {
-      // Tell the worker to filter this ID out of future responses until Discord catches up.
-      await fetch(`${base}/forget?type=gigs&id=${encodeURIComponent(eventId)}`, {
+      const forgetRes = await fetch(`${base}/forget?type=gigs&id=${encodeURIComponent(eventId)}`, {
         method: 'POST',
         headers: { 'X-Cache-Bust-Secret': env.CACHE_BUST_SECRET },
       });
-    } catch {
-      // ignore
+      console.log('[delete-gig] forget response:', forgetRes.status, await forgetRes.text());
+    } catch (err) {
+      console.log('[delete-gig] forget error:', err);
     }
   }
 
