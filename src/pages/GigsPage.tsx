@@ -28,25 +28,38 @@ function GigsPage() {
 
   useEffect(() => {
     if (!session) return;
-    fetch(WORKER_URL)
-      .then(r => {
+    let cancelled = false;
+
+    async function load(attempt: number): Promise<void> {
+      try {
+        const r = await fetch(WORKER_URL);
         if (!r.ok) throw new Error('Failed to fetch gigs');
-        return r.json();
-      })
-      .then(data => {
+        const data = await r.json();
+        if (cancelled) return;
         if (!Array.isArray(data)) throw new Error(data.message ?? 'Unexpected response from Discord');
         const fetched = data as DiscordEvent[];
         const fetchedIds = new Set(fetched.map(g => g.id));
-        // Keep optimistic gigs that the server hasn't caught up to yet; drop those
-        // that have either appeared in the fetch or been cancelled.
         setOptimisticGigs(prev => prev.filter(g => !fetchedIds.has(g.id)));
         setGigs(fetched.sort((a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()));
+        setError(null);
         setLoading(false);
-      })
-      .catch(err => {
-        setError(err.message);
+      } catch (err) {
+        if (cancelled) return;
+        // One silent retry to ride out transient Discord/cache hiccups after a post or delete.
+        if (attempt < 1) {
+          setTimeout(() => { if (!cancelled) load(attempt + 1); }, 1500);
+          return;
+        }
+        // Only surface the error if we have nothing to show.
+        if (gigs.length === 0 && optimisticGigs.length === 0) {
+          setError(err instanceof Error ? err.message : 'Failed to load');
+        }
         setLoading(false);
-      });
+      }
+    }
+
+    load(0);
+    return () => { cancelled = true; };
   }, [session, refreshKey]);
 
   const allGigs = [...gigs, ...optimisticGigs.filter(o => !gigs.some(g => g.id === o.id))].sort(
