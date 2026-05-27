@@ -45,6 +45,9 @@ function GigsPage() {
   const myGigs = session
     ? gigs.filter(g => g.description?.includes(`Discord Username: ${session.username}`))
     : [];
+  const otherGigs = session
+    ? gigs.filter(g => !g.description?.includes(`Discord Username: ${session.username}`))
+    : gigs;
 
   const handleCancel = (eventId: string) => {
     setGigs(prev => prev.filter(g => g.id !== eventId));
@@ -133,11 +136,11 @@ function GigsPage() {
       <div className="mb-6">{postGigButton}</div>
       {loading && <p className="text-gray-500">Loading gigs...</p>}
       {error && <p className="text-red-500">Could not load gigs: {error}</p>}
-      {!loading && !error && gigs.length === 0 && (
+      {!loading && !error && otherGigs.length === 0 && (
         <p className="text-gray-500">No gigs available.</p>
       )}
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-        {gigs.map(gig => (
+        {otherGigs.map(gig => (
           <GigCard key={gig.id} gig={gig} />
         ))}
       </ul>
