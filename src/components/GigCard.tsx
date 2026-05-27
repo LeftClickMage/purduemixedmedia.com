@@ -92,7 +92,7 @@ function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
             <Button
               text={cancelling ? 'Cancelling…' : 'Cancel Gig'}
               onClick={handleCancel}
-              className="mt-2 bg-red-600 border-red-600 hover:bg-red-700 hover:text-white"
+              className="mt-2"
             />
           )}
           {cancelError && (
