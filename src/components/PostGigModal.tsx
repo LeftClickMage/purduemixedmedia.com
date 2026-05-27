@@ -3,7 +3,7 @@ import Button from './Button';
 
 interface PostGigModalProps {
   onClose: () => void;
-  onPosted: () => void;
+  onPosted: (event: unknown) => void;
 }
 
 function nowForDatetimeLocal(): string {
@@ -40,12 +40,12 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
           price: `$${price}`,
         }),
       });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         const detail = data.detail ? ` — ${typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail)}` : '';
         throw new Error(`${data.message ?? `Request failed (${res.status})`}${detail}`);
       }
-      onPosted();
+      onPosted(data.event);
       onClose();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to post gig');

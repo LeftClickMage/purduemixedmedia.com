@@ -97,10 +97,22 @@ function GigsPage() {
     <Button text="Post Gig" onClick={() => setShowPostModal(true)} />
   );
 
+  const handlePosted = (event: unknown) => {
+    if (event && typeof event === 'object' && 'id' in event) {
+      const newGig = event as DiscordEvent;
+      setGigs(prev =>
+        [...prev.filter(g => g.id !== newGig.id), newGig].sort(
+          (a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()
+        )
+      );
+    }
+    setRefreshKey(k => k + 1);
+  };
+
   const modal = showPostModal ? (
     <PostGigModal
       onClose={() => setShowPostModal(false)}
-      onPosted={() => setRefreshKey(k => k + 1)}
+      onPosted={handlePosted}
     />
   ) : null;
 
