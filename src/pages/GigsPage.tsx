@@ -24,7 +24,7 @@ function GigsPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    if (!session?.member) return;
+    if (!session) return;
     fetch(WORKER_URL)
       .then(r => {
         if (!r.ok) throw new Error('Failed to fetch gigs');
@@ -39,7 +39,11 @@ function GigsPage() {
         setError(err.message);
         setLoading(false);
       });
-  }, [session?.member, refreshKey]);
+  }, [session, refreshKey]);
+
+  const myGigs = session
+    ? gigs.filter(g => g.description?.includes(`Discord Username: ${session.username}`))
+    : [];
 
   if (authLoading) {
     return (
@@ -95,9 +99,20 @@ function GigsPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
         {titleRowNoAccess}
-        <p className="text-gray-700 mb-6">
-          Need a photographer, videographer, or creator for an event or project? Post a gig and our members will reach out to you.
-        </p>
+        {myGigs.length > 0 ? (
+          <>
+            <h3 className="text-xl font-semibold mb-4">Your Gig Postings</h3>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
+              {myGigs.map(gig => (
+                <GigCard key={gig.id} gig={gig} hideButtons />
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p className="text-gray-700 mb-6">
+            Need a photographer, videographer, or creator for an event or project? Post a gig and our members will reach out to you.
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-3 mb-8">
           {postGigButton}
         </div>
@@ -127,6 +142,16 @@ function GigsPage() {
           <GigCard key={gig.id} gig={gig} />
         ))}
       </ul>
+      {myGigs.length > 0 && (
+        <>
+          <h3 className="text-xl font-semibold mt-10 mb-4">Your Gig Postings</h3>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+            {myGigs.map(gig => (
+              <GigCard key={gig.id} gig={gig} hideButtons />
+            ))}
+          </ul>
+        </>
+      )}
       {modal}
     </div>
   );

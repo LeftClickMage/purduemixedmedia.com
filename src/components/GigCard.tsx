@@ -7,6 +7,7 @@ import type { DiscordEvent } from './EventCard';
 
 interface GigCardProps {
   gig: DiscordEvent;
+  hideButtons?: boolean;
 }
 
 function parsePoster(description?: string): { poster: string | null; email: string | null; body: string } {
@@ -27,7 +28,7 @@ function parsePoster(description?: string): { poster: string | null; email: stri
   };
 }
 
-function GigCard({ gig }: GigCardProps) {
+function GigCard({ gig, hideButtons = false }: GigCardProps) {
   const discordUrl = gig.guild_id ? `https://discord.com/events/${gig.guild_id}/${gig.id}` : null;
   const imageBaseUrl = gig.image ? `https://cdn.discordapp.com/guild-events/${gig.id}/${gig.image}.png` : null;
 
@@ -56,23 +57,29 @@ function GigCard({ gig }: GigCardProps) {
         <p className="text-sm text-gray-500">Posted by {poster}</p>
       )}
       {body && <Text text={body} />}
-      <div className="flex flex-wrap gap-2 mt-2">
-        {email && (
-          <Button
-            text="Contact"
-            href={`mailto:${email}`}
-            className="text-center"
-          />
-        )}
-        {discordUrl && (
-          <Button
-            text="View on Discord"
-            href={discordUrl}
-            target="_blank"
-            className="text-center"
-          />
-        )}
-      </div>
+      {hideButtons ? (
+        email && (
+          <p className="text-sm text-gray-700 mt-2">Contact Email: {email}</p>
+        )
+      ) : (
+        <div className="flex flex-wrap gap-2 mt-2">
+          {email && (
+            <Button
+              text="Contact"
+              href={`mailto:${email}`}
+              className="text-center"
+            />
+          )}
+          {discordUrl && (
+            <Button
+              text="View on Discord"
+              href={discordUrl}
+              target="_blank"
+              className="text-center"
+            />
+          )}
+        </div>
+      )}
     </li>
   );
 }
