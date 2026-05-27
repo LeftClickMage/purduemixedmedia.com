@@ -108,6 +108,9 @@ function GigsPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
         {titleRowNoAccess}
+        <div className="flex flex-wrap items-center gap-3 mb-8">
+          {postGigButton}
+        </div>
         {myGigs.length > 0 ? (
           <YourGigPostings gigs={myGigs} onCancel={handleCancel} className="mb-8" />
         ) : (
@@ -115,9 +118,6 @@ function GigsPage() {
             Need a photographer, videographer, or creator for an event or project? Post a gig and our members will reach out to you.
           </p>
         )}
-        <div className="flex flex-wrap items-center gap-3 mb-8">
-          {postGigButton}
-        </div>
         <p className="text-sm text-gray-500 mb-3">
           Looking to take on gigs as a member? Contact the President or Business Manager by email or discord.
         </p>
