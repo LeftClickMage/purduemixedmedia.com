@@ -98,13 +98,19 @@ function GigsPage() {
   );
 
   const handlePosted = (event: unknown) => {
+    console.log('[GigsPage] handlePosted received:', event);
     if (event && typeof event === 'object' && 'id' in event) {
       const newGig = event as DiscordEvent;
-      setGigs(prev =>
-        [...prev.filter(g => g.id !== newGig.id), newGig].sort(
+      console.log('[GigsPage] injecting new gig with id', newGig.id, 'description preview:', newGig.description?.slice(0, 100));
+      setGigs(prev => {
+        const next = [...prev.filter(g => g.id !== newGig.id), newGig].sort(
           (a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()
-        )
-      );
+        );
+        console.log('[GigsPage] gigs count after insert:', next.length);
+        return next;
+      });
+    } else {
+      console.warn('[GigsPage] handlePosted got non-event payload');
     }
     setRefreshKey(k => k + 1);
   };
