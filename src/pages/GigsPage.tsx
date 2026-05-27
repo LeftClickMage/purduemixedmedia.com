@@ -25,6 +25,8 @@ function GigsPage() {
   const [refreshKey, setRefreshKey] = useState(0);
   // Gigs added optimistically that may not yet appear in the worker's cached response.
   const [optimisticGigs, setOptimisticGigs] = useState<DiscordEvent[]>([]);
+  // Gigs deleted optimistically that may still appear in stale fetches.
+  const [cancelledIds, setCancelledIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (!session) return;
@@ -40,6 +42,12 @@ function GigsPage() {
         const fetched = data as DiscordEvent[];
         const fetchedIds = new Set(fetched.map(g => g.id));
         setOptimisticGigs(prev => prev.filter(g => !fetchedIds.has(g.id)));
+        // Drop cancelled IDs that the server has confirmed are gone.
+        setCancelledIds(prev => {
+          const next = new Set<string>();
+          for (const id of prev) if (fetchedIds.has(id)) next.add(id);
+          return next;
+        });
         setGigs(fetched.sort((a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()));
         setError(null);
         setLoading(false);
@@ -62,9 +70,9 @@ function GigsPage() {
     return () => { cancelled = true; };
   }, [session, refreshKey]);
 
-  const allGigs = [...gigs, ...optimisticGigs.filter(o => !gigs.some(g => g.id === o.id))].sort(
-    (a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()
-  );
+  const allGigs = [...gigs, ...optimisticGigs.filter(o => !gigs.some(g => g.id === o.id))]
+    .filter(g => !cancelledIds.has(g.id))
+    .sort((a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime());
 
   const myGigs = session
     ? allGigs.filter(g => g.description?.includes(`Discord Username: ${session.username}`))
@@ -76,6 +84,7 @@ function GigsPage() {
   const handleCancel = (eventId: string) => {
     setGigs(prev => prev.filter(g => g.id !== eventId));
     setOptimisticGigs(prev => prev.filter(g => g.id !== eventId));
+    setCancelledIds(prev => new Set(prev).add(eventId));
     setRefreshKey(k => k + 1);
   };
 
