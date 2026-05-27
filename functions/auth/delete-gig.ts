@@ -65,9 +65,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
   }
 
   if (env.GIGS_WORKER_URL && env.CACHE_BUST_SECRET) {
-    // Wait a few seconds so Discord's list endpoint stops returning the deleted event
-    // before we clear the worker's cache.
-    await new Promise(resolve => setTimeout(resolve, 3000));
     try {
       await fetch(`${env.GIGS_WORKER_URL.replace(/\/$/, '')}/bust?type=gigs`, {
         method: 'POST',
