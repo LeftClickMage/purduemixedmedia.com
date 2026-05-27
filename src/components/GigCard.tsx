@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Image from './Image';
 import Button from './Button';
 import MiniTitle from './MiniTitle';
@@ -8,6 +9,7 @@ import type { DiscordEvent } from './EventCard';
 interface GigCardProps {
   gig: DiscordEvent;
   hideButtons?: boolean;
+  onCancel?: (eventId: string) => void;
 }
 
 function parsePoster(description?: string): { poster: string | null; email: string | null; body: string } {
@@ -28,11 +30,35 @@ function parsePoster(description?: string): { poster: string | null; email: stri
   };
 }
 
-function GigCard({ gig, hideButtons = false }: GigCardProps) {
+function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
   const discordUrl = gig.guild_id ? `https://discord.com/events/${gig.guild_id}/${gig.id}` : null;
   const imageBaseUrl = gig.image ? `https://cdn.discordapp.com/guild-events/${gig.id}/${gig.image}.png` : null;
 
   const { poster, email, body } = parsePoster(gig.description);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState<string | null>(null);
+
+  async function handleCancel() {
+    if (!confirm('Cancel this gig? This will delete the event from Discord.')) return;
+    setCancelling(true);
+    setCancelError(null);
+    try {
+      const res = await fetch('/auth/delete-gig', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ eventId: gig.id }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message ?? `Request failed (${res.status})`);
+      }
+      onCancel?.(gig.id);
+    } catch (err) {
+      setCancelError(err instanceof Error ? err.message : 'Failed to cancel');
+      setCancelling(false);
+    }
+  }
 
   return (
     <li className="silver-glint border border-black rounded-lg p-4 sm:p-6 flex flex-col gap-2">
@@ -58,9 +84,21 @@ function GigCard({ gig, hideButtons = false }: GigCardProps) {
       )}
       {body && <Text text={body} />}
       {hideButtons ? (
-        email && (
-          <p className="text-sm text-gray-700 mt-2">Contact Email: {email}</p>
-        )
+        <>
+          {email && (
+            <p className="text-sm text-gray-700 mt-2">Contact Email: {email}</p>
+          )}
+          {onCancel && (
+            <Button
+              text={cancelling ? 'Cancelling…' : 'Cancel Gig'}
+              onClick={handleCancel}
+              className="mt-2 bg-red-600 border-red-600 hover:bg-red-700 hover:text-white"
+            />
+          )}
+          {cancelError && (
+            <p className="text-sm text-red-600">{cancelError}</p>
+          )}
+        </>
       ) : (
         <div className="flex flex-wrap gap-2 mt-2">
           {email && (

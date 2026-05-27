@@ -45,6 +45,11 @@ function GigsPage() {
     ? gigs.filter(g => g.description?.includes(`Discord Username: ${session.username}`))
     : [];
 
+  const handleCancel = (eventId: string) => {
+    setGigs(prev => prev.filter(g => g.id !== eventId));
+    setRefreshKey(k => k + 1);
+  };
+
   if (authLoading) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-8 py-10 sm:py-12">
@@ -104,7 +109,7 @@ function GigsPage() {
             <h3 className="text-xl font-semibold mb-4">Your Gig Postings</h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mb-8">
               {myGigs.map(gig => (
-                <GigCard key={gig.id} gig={gig} hideButtons />
+                <GigCard key={gig.id} gig={gig} hideButtons onCancel={handleCancel} />
               ))}
             </ul>
           </>

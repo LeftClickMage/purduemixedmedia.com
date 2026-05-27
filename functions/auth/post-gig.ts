@@ -5,6 +5,9 @@ interface Env {
   DISCORD_TOKEN: string;
   GIGS_GUILD_ID: string;
   GIGS_VOICE_CHANNEL_ID?: string;
+  GIGS_WORKER_URL?: string;
+  CACHE_BUST_SECRET?: string;
+  GIGS_NOTIFY_CHANNEL_ID?: string;
 }
 
 interface PostGigBody {
@@ -84,7 +87,41 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
     });
   }
 
-  const event = await res.json();
+  const event = await res.json<{ id: string }>();
+
+  // Bust the worker's cache so the new gig shows up immediately on /gigs.
+  // Best-effort: failures here don't fail the post.
+  if (env.GIGS_WORKER_URL && env.CACHE_BUST_SECRET) {
+    try {
+      await fetch(`${env.GIGS_WORKER_URL.replace(/\/$/, '')}/bust?type=gigs`, {
+        method: 'POST',
+        headers: { 'X-Cache-Bust-Secret': env.CACHE_BUST_SECRET },
+      });
+    } catch {
+      // ignore
+    }
+  }
+
+  // Notify the gigs channel. Best-effort.
+  if (env.GIGS_NOTIFY_CHANNEL_ID) {
+    const eventUrl = `https://discord.com/events/${env.GIGS_GUILD_ID}/${event.id}`;
+    try {
+      await fetch(`https://discord.com/api/v10/channels/${env.GIGS_NOTIFY_CHANNEL_ID}/messages`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bot ${env.DISCORD_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: `📣 **New gig posted: ${price}**\nLocation: ${location}\nPosted by ${posterName}\n${eventUrl}`,
+          allowed_mentions: { parse: [] },
+        }),
+      });
+    } catch {
+      // ignore
+    }
+  }
+
   return new Response(JSON.stringify({ ok: true, event }), {
     headers: { 'Content-Type': 'application/json' },
   });
