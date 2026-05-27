@@ -23,6 +23,8 @@ function GigsPage() {
   const [error, setError] = useState<string | null>(null);
   const [showPostModal, setShowPostModal] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  // Gigs added optimistically that may not yet appear in the worker's cached response.
+  const [optimisticGigs, setOptimisticGigs] = useState<DiscordEvent[]>([]);
 
   useEffect(() => {
     if (!session) return;
@@ -33,7 +35,12 @@ function GigsPage() {
       })
       .then(data => {
         if (!Array.isArray(data)) throw new Error(data.message ?? 'Unexpected response from Discord');
-        setGigs(data.sort((a: DiscordEvent, b: DiscordEvent) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()));
+        const fetched = data as DiscordEvent[];
+        const fetchedIds = new Set(fetched.map(g => g.id));
+        // Keep optimistic gigs that the server hasn't caught up to yet; drop those
+        // that have either appeared in the fetch or been cancelled.
+        setOptimisticGigs(prev => prev.filter(g => !fetchedIds.has(g.id)));
+        setGigs(fetched.sort((a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()));
         setLoading(false);
       })
       .catch(err => {
@@ -42,15 +49,20 @@ function GigsPage() {
       });
   }, [session, refreshKey]);
 
+  const allGigs = [...gigs, ...optimisticGigs.filter(o => !gigs.some(g => g.id === o.id))].sort(
+    (a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()
+  );
+
   const myGigs = session
-    ? gigs.filter(g => g.description?.includes(`Discord Username: ${session.username}`))
+    ? allGigs.filter(g => g.description?.includes(`Discord Username: ${session.username}`))
     : [];
   const otherGigs = session
-    ? gigs.filter(g => !g.description?.includes(`Discord Username: ${session.username}`))
-    : gigs;
+    ? allGigs.filter(g => !g.description?.includes(`Discord Username: ${session.username}`))
+    : allGigs;
 
   const handleCancel = (eventId: string) => {
     setGigs(prev => prev.filter(g => g.id !== eventId));
+    setOptimisticGigs(prev => prev.filter(g => g.id !== eventId));
     setRefreshKey(k => k + 1);
   };
 
@@ -98,19 +110,9 @@ function GigsPage() {
   );
 
   const handlePosted = (event: unknown) => {
-    console.log('[GigsPage] handlePosted received:', event);
     if (event && typeof event === 'object' && 'id' in event) {
       const newGig = event as DiscordEvent;
-      console.log('[GigsPage] injecting new gig with id', newGig.id, 'description preview:', newGig.description?.slice(0, 100));
-      setGigs(prev => {
-        const next = [...prev.filter(g => g.id !== newGig.id), newGig].sort(
-          (a, b) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()
-        );
-        console.log('[GigsPage] gigs count after insert:', next.length);
-        return next;
-      });
-    } else {
-      console.warn('[GigsPage] handlePosted got non-event payload');
+      setOptimisticGigs(prev => [...prev.filter(g => g.id !== newGig.id), newGig]);
     }
     setRefreshKey(k => k + 1);
   };
