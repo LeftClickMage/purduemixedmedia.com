@@ -84,6 +84,7 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
               onChange={e => setPosterName(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2"
               maxLength={80}
+              placeholder="ex: John Smith"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -95,7 +96,7 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
               onChange={e => setEmail(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2"
               maxLength={120}
-              placeholder="you@example.com"
+              placeholder="ex: you@example.com"
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -106,7 +107,7 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
               onChange={e => setDescription(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2 h-24 resize-none overflow-y-auto"
               maxLength={800}
-              placeholder="Describe what you're looking for…"
+              placeholder="ex: We need someone who can create a promotional video for our upcoming event hosted by..."
             />
           </label>
           <label className="flex flex-col gap-1">
@@ -118,6 +119,7 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
               onChange={e => setLocation(e.target.value)}
               className="border border-gray-300 rounded-md px-3 py-2"
               maxLength={100}
+              placeholder="ex: NH 1105"
             />
           </label>
           <label className="flex flex-col gap-1">
