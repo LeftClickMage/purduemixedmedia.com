@@ -83,7 +83,7 @@ function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
         )}
       </div>
       <EventDate startTime={gig.scheduled_start_time} endTime={gig.scheduled_end_time} />
-      {poster && (
+      {poster && !hideButtons && (
         <p className="text-sm text-gray-500">Posted by {poster}</p>
       )}
       {body && <Text text={body} />}
@@ -92,9 +92,6 @@ function GigCard({ gig, hideButtons = false, onCancel }: GigCardProps) {
       )}
       {hideButtons ? (
         <>
-          {email && (
-            <p className="text-sm text-gray-700 mt-2">Contact Email: {email}</p>
-          )}
           {onCancel && (
             <Button
               text={cancelling ? 'Cancelling…' : 'Cancel Posting'}
