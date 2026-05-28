@@ -20,6 +20,8 @@ import EthanBTSDeanRKLow from './EthanBTSDeanRK.jpg?w=100&blur=4&format=webp&ima
 import EthanBTSDeanRKHigh from './EthanBTSDeanRK.jpg?w=2048&quality=95&format=webp&imagetools';
 import DeanRKBTSLow from './DeanRKBTS.jpg?w=100&blur=4&format=webp&imagetools';
 import DeanRKBTSHigh from './DeanRKBTS.jpg?w=2048&quality=95&format=webp&imagetools';
+import rainBTSLow from './rainBTS.jpg?w=100&blur=4&format=webp&imagetools';
+import rainBTSHigh from './rainBTS.jpg?w=2048&quality=95&format=webp&imagetools';
 
 export const hangout = { lowSrc: HangoutLow, src: HangoutHigh };
 export const camping = { lowSrc: CampingLow, src: CampingHigh };
@@ -32,3 +34,4 @@ export const bridgeButBTS2 = { lowSrc: BridgeButBTS2Low, src: BridgeButBTS2High 
 export const bridgePhotoET = { lowSrc: BridgePhotoETLow, src: BridgePhotoETHigh };
 export const ethanBTSDeanRK = { lowSrc: EthanBTSDeanRKLow, src: EthanBTSDeanRKHigh };
 export const deanRKBTS = { lowSrc: DeanRKBTSLow, src: DeanRKBTSHigh };
+export const rainBTS = { lowSrc: rainBTSLow, src: rainBTSHigh };

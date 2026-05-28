@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from './Image';
 import SubTitle from './Subtitle';
 import FramedPhoto from './FramedPhoto';
-import { circularStarTrail, bridgeButBTS, bridgeButBTS2, bridgePhotoET, ethanBTSDeanRK, deanRKBTS } from '../assets/images';
+import { circularStarTrail, bridgeButBTS, bridgeButBTS2, bridgePhotoET, ethanBTSDeanRK, deanRKBTS, rainBTS } from '../assets/images';
 
 const CLUB_MEMO = "Our mission is to bring creative minds together to create the next masterpiece.";
 const CLUB_MEMO2 = "Whether that be an eye-catching photo...";
@@ -151,8 +151,8 @@ function ClubIntro() {
         </div>
       </div>
       <FramedPhoto
-        src={ethanBTSDeanRK.src}
-        lowSrc={ethanBTSDeanRK.lowSrc}
+        src={rainBTS.src}
+        lowSrc={rainBTS.lowSrc}
         memo={CLUB_MEMO3}
       />
       <FramedPhoto
