@@ -144,7 +144,7 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
                 inputMode="decimal"
                 value={price}
                 onChange={e => setPrice(e.target.value)}
-                placeholder="200"
+                placeholder="200 / 0 (Volunteer)"
                 className="w-full border border-gray-300 rounded-md pl-7 pr-3 py-2"
               />
             </div>
