@@ -133,7 +133,7 @@ function PostGigModal({ onClose, onPosted }: PostGigModalProps) {
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span className="text-sm font-medium">Price</span>
+            <span className="text-sm font-medium">Budget</span>
             <div className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">$</span>
               <input
