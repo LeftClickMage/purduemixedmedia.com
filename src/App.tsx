@@ -5,6 +5,7 @@ import GigsPage from "./pages/GigsPage";
 import OfficersPage from "./pages/OfficersPage";
 import MediaPage from "./pages/MediaPage";
 import ContactPage from "./pages/ContactPage";
+import RedirectToDiscord from "./pages/RedirectToDiscord";
 import Navbar from "./components/Navbar";
 
 const navLinks = [
@@ -28,6 +29,7 @@ function App() {
         <Route path="/officers" element={<OfficersPage />} />
         <Route path="/media" element={<MediaPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/discord" element={<RedirectToDiscord />} />
       </Routes>
 
       </div>
