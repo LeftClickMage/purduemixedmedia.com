@@ -11,6 +11,12 @@ const SOCIALS = [
     href: 'https://instagram.com/purduemixedmedia',
     buttonText: 'Follow on Instagram',
   },
+  {
+    platform: 'YouTube',
+    description: "Posting Event Vlog's, Short Films, and more!",
+    href: 'https://www.youtube.com/@PurdueMMC',
+    buttonText: 'Watch our Videos',
+  },
 ];
 
 function MediaPage() {
