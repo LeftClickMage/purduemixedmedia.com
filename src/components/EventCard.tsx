@@ -26,12 +26,76 @@ export interface DiscordEvent {
   creator_id?: string;
   /** Discord scheduled event status: 1 = scheduled, 2 = active, 3 = completed, 4 = canceled */
   status?: number;
+  recurrence_rule?: DiscordRecurrenceRule | null;
+  guild_scheduled_event_exceptions?: DiscordEventException[];
+}
+
+interface DiscordRecurrenceRule {
+  end?: string | null;
+  /** 0 = yearly, 1 = monthly, 2 = weekly, 3 = daily */
+  frequency: number;
+  interval: number;
+  /** 0 = Monday ... 6 = Sunday */
+  by_weekday?: number[] | null;
+}
+
+interface DiscordEventException {
+  /** Snowflake that encodes the original start time of the affected occurrence. */
+  event_exception_id: string;
+  is_canceled?: boolean;
 }
 
 const DISCORD_EVENT_STATUS_CANCELED = 4;
+const DISCORD_EPOCH = 1420070400000;
+const DAY_MS = 24 * 60 * 60 * 1000;
 
-export function isCanceled(event: DiscordEvent): boolean {
-  return event.status === DISCORD_EVENT_STATUS_CANCELED;
+function snowflakeToMs(id: string): number {
+  return Number(BigInt(id) >> 22n) + DISCORD_EPOCH;
+}
+
+/**
+ * Hides events that are canceled. For recurring events whose upcoming occurrence
+ * was canceled (a Discord "exception"), advances to the next non-canceled
+ * occurrence instead. Returns null if nothing should be shown.
+ */
+export function resolveUpcomingOccurrence(event: DiscordEvent): DiscordEvent | null {
+  if (event.status === DISCORD_EVENT_STATUS_CANCELED) return null;
+
+  const canceledStarts = new Set(
+    (event.guild_scheduled_event_exceptions ?? [])
+      .filter(ex => ex.is_canceled)
+      .map(ex => snowflakeToMs(ex.event_exception_id))
+  );
+  let start = new Date(event.scheduled_start_time).getTime();
+  if (!canceledStarts.has(start)) return event;
+
+  const rule = event.recurrence_rule;
+  // Only daily/weekly recurrences can be stepped forward simply; hide anything else.
+  if (!rule || (rule.frequency !== 2 && rule.frequency !== 3)) return null;
+
+  const interval = Math.max(1, rule.interval || 1);
+  const weekdays = rule.by_weekday?.length ? rule.by_weekday : null;
+  // Step a day at a time when a weekday filter applies (e.g. "every weekday"),
+  // otherwise jump by the full interval.
+  const stepByDay = weekdays !== null && (rule.frequency === 3 || interval === 1);
+  const step = stepByDay ? DAY_MS : (rule.frequency === 2 ? 7 : 1) * interval * DAY_MS;
+  const ruleEnd = rule.end ? new Date(rule.end).getTime() : Infinity;
+  const duration = event.scheduled_end_time
+    ? new Date(event.scheduled_end_time).getTime() - start
+    : null;
+
+  for (let i = 0; i < 366; i++) {
+    start += step;
+    if (start > ruleEnd) return null;
+    if (weekdays && stepByDay && !weekdays.includes((new Date(start).getUTCDay() + 6) % 7)) continue;
+    if (canceledStarts.has(start)) continue;
+    return {
+      ...event,
+      scheduled_start_time: new Date(start).toISOString(),
+      scheduled_end_time: duration !== null ? new Date(start + duration).toISOString() : event.scheduled_end_time,
+    };
+  }
+  return null;
 }
 
 interface EventCardProps {

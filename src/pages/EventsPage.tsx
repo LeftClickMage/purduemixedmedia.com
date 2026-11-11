@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import EventCard, { type DiscordEvent, isCanceled } from '../components/EventCard';
+import EventCard, { type DiscordEvent, resolveUpcomingOccurrence } from '../components/EventCard';
 import Subtitle from '../components/Subtitle';
 import { usePageTitle } from '../lib/usePageTitle';
 import { usePageDescription } from '../lib/usePageDescription';
@@ -22,7 +22,7 @@ function EventsPage() {
       })
       .then(data => {
         if (!Array.isArray(data)) throw new Error(data.message ?? 'Unexpected response from Discord');
-        setEvents((data as DiscordEvent[]).filter(e => !isCanceled(e)).sort((a: DiscordEvent, b: DiscordEvent) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()));
+        setEvents((data as DiscordEvent[]).map(resolveUpcomingOccurrence).filter((e): e is DiscordEvent => e !== null).sort((a: DiscordEvent, b: DiscordEvent) => new Date(a.scheduled_start_time).getTime() - new Date(b.scheduled_start_time).getTime()));
         setLoading(false);
       })
       .catch(err => {
