@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import GigCard from '../components/GigCard';
-import type { DiscordEvent } from '../components/EventCard';
+import { type DiscordEvent, isCanceled } from '../components/EventCard';
 import Subtitle from '../components/Subtitle';
 import Button from '../components/Button';
 import Text from '../components/Text';
@@ -39,7 +39,7 @@ function GigsPage() {
         const data = await r.json();
         if (cancelled) return;
         if (!Array.isArray(data)) throw new Error(data.message ?? 'Unexpected response from Discord');
-        const fetched = data as DiscordEvent[];
+        const fetched = (data as DiscordEvent[]).filter(g => !isCanceled(g));
         const fetchedIds = new Set(fetched.map(g => g.id));
         setOptimisticGigs(prev => prev.filter(g => !fetchedIds.has(g.id)));
         // Drop cancelled IDs that the server has confirmed are gone.

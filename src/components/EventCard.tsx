@@ -24,6 +24,14 @@ export interface DiscordEvent {
   user_count?: number;
   creator?: DiscordUser;
   creator_id?: string;
+  /** Discord scheduled event status: 1 = scheduled, 2 = active, 3 = completed, 4 = canceled */
+  status?: number;
+}
+
+const DISCORD_EVENT_STATUS_CANCELED = 4;
+
+export function isCanceled(event: DiscordEvent): boolean {
+  return event.status === DISCORD_EVENT_STATUS_CANCELED;
 }
 
 interface EventCardProps {
